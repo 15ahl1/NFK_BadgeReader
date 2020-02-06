@@ -23,7 +23,7 @@ def bit_count(int_type):
     return count
 
 
-class Decoder:
+class Wiegand:
     """
     A class to read Wiegand codes of an arbitrary length.
     """
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     # Remove later --- left in here to show whats needed
     pi = pigpio.pi()
 
-    w = Decoder(pi, 14, 15, callback)
+    w = Wiegand(pi, 14, 15, callback)
 
     time.sleep(300)
 
