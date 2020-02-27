@@ -21,12 +21,12 @@ class Consumer:
 
         while True:
             #Waiting for connection
-            s.listen(100)
+            s.listen(1)
             print("Waiting for a connection...")
             connection, client_address = s.accept()
 
             #Accepting connection
-            print('Connection Accepted from: ' + str(client_address[1]))
+            print('Connection Accepted from: ' + str(client_address[0]))
             message = connection.recv(1024)
 
             #Write to file
@@ -36,5 +36,5 @@ class Consumer:
             print("Message saved")
             message = ""
 
-#c = Consumer("test.txt", 6969)
-#c.consume()
+c = Consumer("test.txt", 6969)
+c.consume()

@@ -21,5 +21,5 @@ class Producer:
         s.close()
 
 
-p = Producer("localhost", 6969)
-p.sendRecord("Test 02")
+# p = Producer("localhost", 6969)
+# p.sendRecord("Test 02")
