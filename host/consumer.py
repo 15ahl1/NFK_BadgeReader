@@ -8,6 +8,7 @@ class Consumer:
     port = -1
 
     #Instantiate with path to output file and port to listen on
+    #Needs to be an Absolute Path to get proper saving functionality
     def __init__(self, path, port):
         self.path = path
         self.port = port
@@ -17,7 +18,7 @@ class Consumer:
         message = ""
         #Setting up Socket connection
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(('localhost', self.port))
+        s.bind(('0.0.0.0', self.port))
 
         while True:
             #Waiting for connection
@@ -28,13 +29,15 @@ class Consumer:
             #Accepting connection
             print('Connection Accepted from: ' + str(client_address[0]))
             message = connection.recv(1024)
+            print("Recieved message: " + message.decode())
 
             #Write to file
-            f = open(self.path, 'a')
-            f.write(message.decode() + "\n")
-            f.close()
+            with open(self.path, 'a') as f:
+                f.write(message.decode() + "\n")
+                
             print("Message saved")
             message = ""
 
-c = Consumer("test.txt", 6969)
+#Needs to be an Absolute Path to get proper saving functionality
+c = Consumer("C:/Users/15ahl1/Desktop/Capstone/test.txt", 6969)
 c.consume()
