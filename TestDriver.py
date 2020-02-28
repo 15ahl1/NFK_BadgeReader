@@ -7,7 +7,7 @@ from client.RecordMaker import RecordMaker
 r = RecordMaker()
 
 #Creates the Message Producer and points it to localhost on port 6969
-p = Producer("localhost", 6969)
+p = Producer("10.217.212.14", 6969)
 
 #Producer sends the message created by the record maker with badgeID 12345
 p.sendRecord(r.createRecord(22, 12345))
