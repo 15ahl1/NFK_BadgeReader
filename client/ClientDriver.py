@@ -1,30 +1,23 @@
-#Driver Program to run on Raspberry Pi Bootup
-#Written by Alastair Lewis
-from Producer import Producer
-from RecordMaker import RecordMaker
+# Driver Program to run on Raspberry Pi Bootup
+# Written by Alastair Lewis
 
-#Stub method to simulate badge scans
-import random as rand
-def badgeScan():
-    if rand.randint(0, 10) == 0:
-        return (123, 54321)
-    return (0,0)
+from client.Producer import Producer
+from client.RecordMaker import RecordMaker
 
-#NEED TO BE SET TO HOST IP AND PORT
-HOSTIP = "127.0.0.1"
-HOSTPORT = 6969
 
-#Creating RecordMaker and Producer Objects
-r = RecordMaker()
-p = Producer(HOSTIP, HOSTPORT)
+class ClientDriver():
+    def __init__(self):
+        # NEED TO BE SET TO HOST IP AND PORT
+        self.HOSTIP = "192.168.2.14"
+        self.HOSTPORT = 6969
 
-while True:
-    #On Callback function run:
-    facilityCode, badgeNumb = badgeScan()
+        # Creating RecordMaker and Producer Objects
+        self.r = RecordMaker()
+        self.p = Producer(self.HOSTIP, self.HOSTPORT)
 
-    #Checking for non-zero values
-    if facilityCode != 0:
-        record = r.createRecord(facilityCode, badgeNumb)
-        p.sendRecord(record)
-        print(record + " Sent")
-
+    def send_message(self, facilityCode, badgeNumb):
+        # Checking for non-zero values
+        if facilityCode != 0:
+            record = self.r.createRecord(facilityCode, badgeNumb)
+            self.p.sendRecord(record)
+            print(record + " Sent")

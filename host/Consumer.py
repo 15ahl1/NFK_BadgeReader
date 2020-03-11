@@ -45,6 +45,6 @@ class Consumer:
             message = ""
 
 #Needs to be an Absolute Path to get proper saving functionality
-d = Database("C:/Users/Alastair/Desktop/CISC 498/Capstone/test.txt")
-c = Consumer("C:/Users/Alastair/Desktop/CISC 498/Capstone/test.txt", 6969, d)
+d = Database("/Users/jd/Documents/Capstone/output.txt")
+c = Consumer("/Users/jd/Documents/Capstone/output.txt", 6969, d)
 c.consume()
