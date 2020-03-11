@@ -1,9 +1,8 @@
 # Driver Program to run on Raspberry Pi Bootup
 # Written by Alastair Lewis
-
-from client.Producer import Producer
-from client.RecordMaker import RecordMaker
-
+import Producer
+import RecordMaker
+import Wiegand
 
 class ClientDriver():
     def __init__(self):
@@ -21,3 +20,26 @@ class ClientDriver():
             record = self.r.createRecord(facilityCode, badgeNumb)
             self.p.sendRecord(record)
             print(record + " Sent")
+
+
+if __name__ == "__main__":
+    # Remove later --- left in here to show whats needed
+    pi = pigpio.pi()
+
+    def callback(facilty, card, error):
+        print(card)
+        clientDriver.send_message(facilty, card)
+
+        if error:
+            print(error)
+
+    clientDriver = ClientDriver()
+
+    w = Wiegand(pi, 17, 18, callback)
+
+    time.sleep(300)
+
+    w.cancel()
+
+    pi.stop()
+
