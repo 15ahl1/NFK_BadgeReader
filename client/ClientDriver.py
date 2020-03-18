@@ -1,8 +1,11 @@
 # Driver Program to run on Raspberry Pi Bootup
 # Written by Alastair Lewis
-import Producer
-import RecordMaker
-import Wiegand
+
+
+from Producer import *
+from RecordMaker import *
+from Wiegand import *
+import pigpio
 
 class ClientDriver():
     def __init__(self):
@@ -24,6 +27,7 @@ class ClientDriver():
 
 if __name__ == "__main__":
     # Remove later --- left in here to show whats needed
+    print("run")
     pi = pigpio.pi()
 
     def callback(facilty, card, error):
