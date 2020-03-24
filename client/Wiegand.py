@@ -51,7 +51,7 @@ class Wiegand:
 
         self.error_msg = None
         self.facility = None
-        self.code = None
+        self.card = None
 
     def _cb(self, gpio, level, tick):
         """
