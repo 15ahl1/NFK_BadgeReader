@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container">
+  <div class="row">
+    <h2>Supervisors: </h2>
+    <form method="POST" action="/uploadSuper" enctype="multipart/form-data">
+      <div class="form group">
+        <label for="uploadSuper"> Upload File</label>
+        <input type="file" name="uploadSuper">
+        <button type="submit" class="btn btn-outline-info">
+          Upload new Supervisors
+        </button>
+       </div>
+    </form>
+  </div>
+
+<!-- <div class="row container">
+  <button type="button" class="btn btn-outline-secondary" type="submit" value="downloadSupers">
+    Download Supervisors file
+  </button>
+</div> -->
+
+</div>
+
+
+{% endblock %}
