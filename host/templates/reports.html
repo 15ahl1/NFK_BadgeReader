@@ -6,24 +6,283 @@
 <div class="container">
   <div class="row">
     <h2>Supervisors: </h2>
+  </div>
+  <div class="row">
     <form method="POST" action="/uploadSuper" enctype="multipart/form-data">
       <div class="form group">
-        <label for="uploadSuper"> Upload File</label>
-        <input type="file" name="uploadSuper">
-        <button type="submit" class="btn btn-outline-info">
-          Upload new Supervisors
-        </button>
-       </div>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupFileAddon01">File:</span>
+          </div>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" name="uploadSuper" aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="inputGroupFile01">Select File ...</label>
+          </div>
+          <div class="container">
+            <br>
+            <button type="submit" class="btn btn-outline-info">
+              Upload new Supervisors
+            </button>
+            <form method="POST" action="/downloadSuper">
+              <button type="submit" class="btn btn-outline-secondary">
+                Download Supervisors file
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </form>
   </div>
+  <br>
 
-<!-- <div class="row container">
-  <button type="button" class="btn btn-outline-secondary" type="submit" value="downloadSupers">
-    Download Supervisors file
-  </button>
-</div> -->
+  <script type="text/javascript">
+    $('.custom-file-input').on('change', function() {
+      let fileName = $(this).val().split('\\').pop();
+      $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+  </script>
 
+
+  <div class="row">
+    <h2>Departments: </h2>
+  </div>
+  <div class="row">
+    <form method="POST" action="/uploadDepartments" enctype="multipart/form-data">
+      <div class="form group">
+
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupFileAddon01">File:</span>
+          </div>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" name="uploadDepartments" aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="inputGroupFile01">Select File ...</label>
+          </div>
+          <div class="container">
+            <br>
+            <button type="submit" class="btn btn-outline-info">
+              Upload new Departments
+            </button>
+            <form method="POST" action="/downloadSuper">
+              <button type="submit" class="btn btn-outline-secondary">
+                Download Departments file
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br>
+
+  <script type="text/javascript">
+    $('.custom-file-input').on('change', function() {
+      let fileName = $(this).val().split('\\').pop();
+      $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+  </script>
+
+
+
+
+
+  <div class="row">
+    <h2>Faculty: </h2>
+  </div>
+  <div class="row">
+    <form method="POST" action="/uploadFaculty" enctype="multipart/form-data">
+      <div class="form group">
+
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupFileAddon01">File:</span>
+          </div>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" name="uploadFaculty" aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="inputGroupFile01">Select File ...</label>
+          </div>
+          <div class="container">
+            <br>
+            <button type="submit" class="btn btn-outline-info">
+              Upload new Faculty
+            </button>
+            <form method="POST" action="/downloadFaculty">
+              <button type="submit" class="btn btn-outline-secondary">
+                Download Faculty file
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br>
+
+  <script type="text/javascript">
+    $('.custom-file-input').on('change', function() {
+      let fileName = $(this).val().split('\\').pop();
+      $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+  </script>
+
+
+  <div class="row">
+    <h2>Institution: </h2>
+  </div>
+  <div class="row">
+    <form method="POST" action="/uploadInstitution" enctype="multipart/form-data">
+      <div class="form group">
+
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupFileAddon01">File:</span>
+          </div>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" name="uploadInstitution" aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="inputGroupFile01">Select File ...</label>
+          </div>
+          <div class="container">
+            <br>
+            <button type="submit" class="btn btn-outline-info">
+              Upload new Institution
+            </button>
+            <form method="POST" action="/downloadSuper">
+              <button type="submit" class="btn btn-outline-secondary">
+                Download Institution file
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br>
+
+  <script type="text/javascript">
+    $('.custom-file-input').on('change', function() {
+      let fileName = $(this).val().split('\\').pop();
+      $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+  </script>
+
+  <div class="row">
+    <h2>Rate Type: </h2>
+  </div>
+  <div class="row">
+    <form method="POST" action="/uploadRateType" enctype="multipart/form-data">
+      <div class="form group">
+
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupFileAddon01">File:</span>
+          </div>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" name="uploadRateType" aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="inputGroupFile01">Select File ...</label>
+          </div>
+          <div class="container">
+            <br>
+            <button type="submit" class="btn btn-outline-info">
+              Upload new Rate Type
+            </button>
+            <form method="POST" action="/downloadSuper">
+              <button type="submit" class="btn btn-outline-secondary">
+                Download Rate Type file
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br>
+
+  <script type="text/javascript">
+    $('.custom-file-input').on('change', function() {
+      let fileName = $(this).val().split('\\').pop();
+      $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+  </script>
+
+
+  <div class="row">
+    <h2>Users: </h2>
+  </div>
+  <div class="row">
+    <form method="POST" action="/uploadUsers" enctype="multipart/form-data">
+      <div class="form group">
+
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupFileAddon01">File:</span>
+          </div>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" name="uploadUsers" aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="inputGroupFile01">Select File ...</label>
+          </div>
+          <div class="container">
+            <br>
+            <button type="submit" class="btn btn-outline-info">
+              Upload new Users
+            </button>
+            <form method="POST" action="/downloadSuper">
+              <button type="submit" class="btn btn-outline-secondary">
+                Download Users file
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br>
+
+  <script type="text/javascript">
+    $('.custom-file-input').on('change', function() {
+      let fileName = $(this).val().split('\\').pop();
+      $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+  </script>
+
+
+  <div class="row">
+    <h2>Usage: </h2>
+  </div>
+  <div class="row">
+    <form method="POST" action="/uploadUsage" enctype="multipart/form-data">
+      <div class="form group">
+
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupFileAddon01">File:</span>
+          </div>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" name="uploadUsage" aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="inputGroupFile01">Select File ...</label>
+          </div>
+          <div class="container">
+            <br>
+            <button type="submit" class="btn btn-outline-info">
+              Upload new Usage
+            </button>
+            <form method="POST" action="/downloadSuper">
+              <button type="submit" class="btn btn-outline-secondary">
+                Download Usage file
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br>
+
+  <script type="text/javascript">
+    $('.custom-file-input').on('change', function() {
+      let fileName = $(this).val().split('\\').pop();
+      $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+  </script>
 </div>
-
 
 {% endblock %}

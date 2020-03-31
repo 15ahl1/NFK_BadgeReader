@@ -1,6 +1,7 @@
 CREATE TABLE users(
   userID int not null auto_increment,
   username varchar(50),
+  userPin varchar(100),
   supervisor varchar(50),
   department varchar(50),
   faculty varchar(50),

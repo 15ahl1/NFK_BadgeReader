@@ -22,6 +22,21 @@
         </div>
 
         <div class="form-group">
+          {{ form.userPin.label(class="form-control-label") }}
+          {% if form.userPin.errors %}
+          {{ form.userPin(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.userPin.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %}
+          {{ form.userPin(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+
+
+        <div class="form-group">
           {{ form.supervisor.label(class="form-control-label") }}
           {% if form.supervisor.errors %}
           {{ form.supervisor(class="form-control form-control-lg is-invalid") }}
@@ -144,105 +159,15 @@
           <thead>List of all current users:</thead>
           {% for users in userDetails %}
           <tr>
-            <td> <h4>{{users[1]}}</h4> </td>
-            <td><button type="button" class="btn btn-warning" id={{users[0]}} >Edit</button></td>
+            <td>
+              <h4>{{users[1]}}</h4>
+            </td>
             <td><a href="/deleteUser/{{users[0]}}" <button type="button" class="btn btn-danger">Delete</button></td>
           </tr>
           {% endfor %}
         </table>
       </div>
     </div>
-
-
-<!-- <div class="col">
-  <form method="POST">
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="username" class="form-control" id="username" placeholder="Enter Username">
-    </div>
-      <div class="form-group">
-      <label for="exampleFormControlSelect1">Supervisor</label>
-      <select class="form-control" id="exampleFormControlSelect1">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-      </select>
-    </div>
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">Department</label>
-    <select class="form-control" id="exampleFormControlSelect1">
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-    </select>
-  </div>
-  <div class="form-group">
-  <label for="exampleFormControlSelect1">Faculty</label>
-  <select class="form-control" id="exampleFormControlSelect1">
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-    <option>4</option>
-    <option>5</option>
-  </select>
-</div>
-<div class="form-group">
-<label for="exampleFormControlSelect1">Institution</label>
-<select class="form-control" id="exampleFormControlSelect1">
-  <option>1</option>
-  <option>2</option>
-  <option>3</option>
-  <option>4</option>
-  <option>5</option>
-</select>
-</div>
-<div class="form-group">
-<label for="exampleFormControlSelect1">Rate Type</label>
-<select class="form-control" id="exampleFormControlSelect1">
-  <option>1</option>
-  <option>2</option>
-  <option>3</option>
-  <option>4</option>
-  <option>5</option>
-</select>
-<br>
-  <h4>Permissions:</h4>
-<div class="form-check">
-    <input type="checkbox" class="form-check-input" id="machine1">
-    <label class="form-check-label" for="machine1">Machine 1</label>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="machine2">
-    <label class="form-check-label" for="machine2">Machine 2</label>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="machine3">
-    <label class="form-check-label" for="machine3">Machine 3</label>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="machine4">
-    <label class="form-check-label" for="machine4">Machine 4</label>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="machine5">
-    <label class="form-check-label" for="machine5">Machine 5</label>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="machine6">
-    <label class="form-check-label" for="machine6">Machine 6</label>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="machine7">
-    <label class="form-check-label" for="machine7">Machine 7</label>
-  </div>
-</div>
-  </form>
-  </div> -->
-
   </div>
 
 

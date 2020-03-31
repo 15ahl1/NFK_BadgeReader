@@ -11,7 +11,8 @@ class userTime(FlaskForm):
 
 
 class makeNewUser(FlaskForm):
-    userName = StringField('username', validators=[DataRequired(), Length(min=2,max=20)])
+    userName = StringField('Username', validators=[DataRequired(), Length(min=2,max=40)])
+    userPin = StringField('UserPIN', validators=[DataRequired(), Length(min=2,max=100)])
     supervisor = SelectField(
         'Supervisor',
         choices=[('Queens University','Queens University')]
