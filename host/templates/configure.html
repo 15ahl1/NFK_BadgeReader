@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container content-section">
+  <table class="table">
+    <thead>
+      <h3>Supervisors</h3>
+    </thead>
+    <button type="button" class="float-right btn btn-success" data-toggle="modal" data-target="#SuperModel">
+      Add to table
+    </button>
+  <br><br>
+    {% for supers in supers %}
+    <tr>
+      <td> {{supers[1]}} </td>
+      <td><a href="/deleteSuper/{{supers[0]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
+    </tr>
+    {% endfor %}
+  </table>
+
+</div>
+
+<div class="modal fade" id="SuperModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create Supervisor</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="">
+          <div class="form-group">
+            {{ superForm.superName.label(class="form-control-label") }}
+            {{ superForm.superName(class="form-control form-control-lg is-invalid") }}
+            <br>
+            {{ superForm.submit(class="btn btn-outline-primary") }}
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container content-section">
+  <table class="table">
+    <thead><h3>Department</h3></thead>
+    <button type="button" class="float-right btn btn-success" data-toggle="modal" data-target="#DeptModel">
+    Add to table
+  </button><br><br>
+    {% for dept in dept %}
+    <tr>
+      <td> {{dept[1]}} </td>
+      <td><a href="/deleteDepartment/{{dept[0]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
+    </tr>
+    {% endfor %}
+  </table>
+
+</div>
+
+<div class="modal fade" id="DeptModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create Department</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="">
+          <div class="form-group">
+            {{ deptForm.deptName.label(class="form-control-label") }}
+            {{ deptForm.deptName(class="form-control form-control-lg is-invalid") }}
+            <br>
+            {{ deptForm.submit(class="btn btn-outline-primary") }}
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container content-section">
+  <table class="table">
+    <thead><h3>Faculty</h3></thead>
+    <button type="button" class="float-right btn btn-success" data-toggle="modal" data-target="#FacultyModel">
+    Add to table
+  </button>
+  <br><br>
+    {% for faculty in faculty %}
+    <tr>
+      <td> {{faculty[1]}} </td>
+      <td><a href="/deleteFaculty/{{faculty[0]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
+    </tr>
+    {% endfor %}
+  </table>
+
+</div>
+
+<div class="modal fade" id="FacultyModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create Faculty</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="">
+          <div class="form-group">
+            {{ facultyForm.facultyName.label(class="form-control-label") }}
+            {{ facultyForm.facultyName(class="form-control form-control-lg is-invalid") }}
+            <br>
+            {{ facultyForm.submit(class="btn btn-outline-primary") }}
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container content-section">
+  <table class="table">
+    <thead><h3>Institution</h3></thead>
+    <button type="button" class="float-right btn btn-success" data-toggle="modal" data-target="#InstitutionModel">
+    Add to table
+  </button>
+  <br><br>
+    {% for institution in institution %}
+    <tr>
+      <td> {{institution[1]}} </td>
+      <td><a href="/deleteInstitution/{{institution[0]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
+    </tr>
+    {% endfor %}
+  </table>
+
+</div>
+
+<div class="modal fade" id="InstitutionModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create Institution</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="">
+          <div class="form-group">
+            {{ institutionForm.institutionName.label(class="form-control-label") }}
+            {{ institutionForm.institutionName(class="form-control form-control-lg is-invalid") }}
+            <br>
+            {{ institutionForm.submit(class="btn btn-outline-primary") }}
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="container content-section">
+  <table class="table">
+    <thead><h3>Rate Type</h3></thead>
+    <button type="button" class="float-right btn btn-success" data-toggle="modal" data-target="#rateModel">
+    Add to table
+  </button>
+  <br><br>
+    {% for rate in rate %}
+    <tr>
+      <td> {{rate[1]}} </td>
+      <td> {{rate[2]}} </td>
+      <td><a href="/deleteRate/{{rate[0]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="modal fade" id="rateModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create Rate</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="">
+          <div class="form-group">
+            {{ rateForm.rateTypeName.label(class="form-control-label") }}
+            {{ rateForm.rateTypeName(class="form-control form-control-lg is-invalid") }}
+            {{ rateForm.rateAmount.label(class="form-control-label") }}
+            {{ rateForm.rateAmount(class="form-control form-control-lg is-invalid") }}
+            <br>
+            {{ rateForm.submit(class="btn btn-outline-primary") }}
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+  {% endblock %}

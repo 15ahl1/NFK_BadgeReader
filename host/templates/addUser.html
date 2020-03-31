@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container content-section">
+  <div class="row">
+    <div class="col">
+      <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          {{ form.userName.label(class="form-control-label") }}
+          {% if form.userName.errors %}
+          {{ form.userName(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.userName.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %}
+          {{ form.userName(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          {{ form.userPin.label(class="form-control-label") }}
+          {% if form.userPin.errors %}
+          {{ form.userPin(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.userPin.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %}
+          {{ form.userPin(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+
+
+        <div class="form-group">
+          {{ form.supervisor.label(class="form-control-label") }}
+          {% if form.supervisor.errors %}
+          {{ form.supervisor(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.supervisor.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %}
+          {{ form.supervisor(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          {{ form.department.label(class="form-control-label") }}
+          {% if form.department.errors %}
+          {{ form.department(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.department.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %}
+          {{ form.department(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          {{ form.faculty.label(class="form-control-label") }}
+          {% if form.faculty.errors %}
+          {{ form.faculty(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.faculty.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %}
+          {{ form.faculty(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          {{ form.institution.label(class="form-control-label") }}
+          {% if form.institution.errors %}
+          {{ form.institution(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.institution.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %}
+          {{ form.institution(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          {{ form.rateType.label(class="form-control-label") }}
+          {% if form.rateType.errors %}
+          {{ form.rateType(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.rateType.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %}
+          {{ form.rateType(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+
+
+
+
+
+
+        <h5>Permissions</h5>
+        <fieldset class="form-check">
+          {{ form.perMac1(class="form-check-input") }}
+          {{ form.perMac1.label(class="form-check-label") }}
+        </fieldset>
+
+        <fieldset class="form-check">
+          {{ form.perMac2(class="form-check-input") }}
+          {{ form.perMac2.label(class="form-check-label") }}
+        </fieldset>
+
+        <fieldset class="form-check">
+          {{ form.perMac3(class="form-check-input") }}
+          {{ form.perMac3.label(class="form-check-label") }}
+        </fieldset>
+
+        <fieldset class="form-check">
+          {{ form.perMac4(class="form-check-input") }}
+          {{ form.perMac4.label(class="form-check-label") }}
+        </fieldset>
+
+        <fieldset class="form-check">
+          {{ form.perMac5(class="form-check-input") }}
+          {{ form.perMac5.label(class="form-check-label") }}
+        </fieldset>
+
+        <fieldset class="form-check">
+          {{ form.perMac6(class="form-check-input") }}
+          {{ form.perMac6.label(class="form-check-label") }}
+        </fieldset>
+
+        <fieldset class="form-check">
+          {{ form.perMac7(class="form-check-input") }}
+          {{ form.perMac7.label(class="form-check-label") }}
+        </fieldset>
+
+        <div class="form-group">
+          {{ form.submit(class="btn btn-outline-primary") }}
+        </div>
+      </form>
+    </div>
+
+    <div class="col">
+      <div class="container content-section">
+        <table class="table">
+          <thead>List of all current users:</thead>
+          {% for users in userDetails %}
+          <tr>
+            <td>
+              <h4>{{users[1]}}</h4>
+            </td>
+            <td><a href="/deleteUser/{{users[0]}}" <button type="button" class="btn btn-danger">Delete</button></td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  {% endblock %}
