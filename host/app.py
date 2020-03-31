@@ -1,11 +1,12 @@
 from flask import Flask, render_template, url_for, flash, redirect, request
+from flask_wtf import FlaskForm
 from forms import *
 from flask_mysqldb import MySQL
-import yaml, json
-import csv, os, io
-from flask_wtf import FlaskForm
+import yaml
+import json
+import os
+import io
 import datetime
-# from werkzeug import secure_filename
 import pandas
 
 
@@ -22,16 +23,16 @@ mysql = MySQL(app)
 
 uploads_dir = os.path.join(app.instance_path, 'uploads')
 
-
-#All routing
+# All routing
 @app.route('/')
 def index():
     return home()
 
+
 @app.route('/home.html', methods=['GET', 'POST',  'PUT'])
 def home():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT inUse FROM machines WHERE machine = 'b8:27:eb:61:98:05'")
+    cur.execute("SELECT inUse FROM machines WHERE machine = '98:01:a7:8f:00:99'")
     status = cur.fetchone()
     status1 = status[0]
     cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:02'")
@@ -57,7 +58,6 @@ def home():
     return render_template("/home.html", machine1=status1, machine2=status2, machine3=status3, machine4=status4, machine5=status5, machine6=status6, machine7=status7)
 
 
-
 @app.route('/time.html', methods=['GET', 'POST',  'PUT'])
 def timeFunction():
     # form = userTime()
@@ -68,6 +68,7 @@ def timeFunction():
     default_machine = ''
     machine = request.args.get('machineNumber', default_machine)
     return timeHelper(name, date, machine)
+
 
 def timeHelper(name, date, machine):
     value1 = 1
@@ -132,7 +133,11 @@ def timeHelper(name, date, machine):
         label6 = yesterday.strftime("%A") + " " + str(yesterday.day)
         label7 = currentDate.strftime("%A") + " " + str(currentDate.day)
 
-    return render_template('time.html', units=units, label1=label1, label2=label2, label3=label3, label4=label4, label5=label5, label6=label6, label7=label7, value1=value1, value2=value2, value3=value3, value4=value4, value5=value5, value6=value6, value7=value7)
+    return render_template('time.html', units=units, label1=label1,
+    label2=label2, label3=label3, label4=label4, label5=label5, label6=label6,
+    label7=label7, value1=value1, value2=value2, value3=value3, value4=value4,
+    value5=value5, value6=value6, value7=value7)
+
 
 @app.route('/addUser.html', methods=['GET', 'POST',  'PUT'])
 def userFunction():
@@ -144,7 +149,8 @@ def userFunction():
     dept = cur.fetchall()
     faculty = cur.execute("SELECT facultyName, facultyName FROM faculty")
     faculty = cur.fetchall()
-    institution = cur.execute("SELECT institutionName, institutionName FROM institution")
+    institution = cur.execute(
+        "SELECT institutionName, institutionName FROM institution")
     institution = cur.fetchall()
     rate = cur.execute("SELECT rateAmount, rateName FROM rateType")
     rate = cur.fetchall()
@@ -153,7 +159,7 @@ def userFunction():
     form.faculty.choices = faculty
     form.institution.choices = institution
     form.rateType.choices = rate
-    if request.method=="POST":
+    if request.method == "POST":
         permissionString = ""
         if(form.perMac1.data == True):
             permissionString += "1"
@@ -190,7 +196,7 @@ def userFunction():
         else:
             permissionString += "0"
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO users(username, supervisor, department, faculty, institution, rateType, Permissions) VALUES(%s, %s, %s, %s, %s, %s, %s)",([form.userName.data, form.supervisor.data, form.department.data, form.faculty.data, form.institution.data,form.rateType.data, permissionString]))
+        cur.execute("INSERT INTO users(username, userPin, supervisor, department, faculty, institution, rateType, Permissions) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", ([form.userName.data, form.userPin.data, form.supervisor.data, form.department.data, form.faculty.data, form.institution.data, form.rateType.data, permissionString]))
         mysql.connection.commit()
         cur.close()
         return redirect('addUser.html')
@@ -198,7 +204,6 @@ def userFunction():
     resultValue = cur.execute("SELECT * FROM users")
     userDetails = cur.fetchall()
     return render_template('addUser.html', form=form, userDetails=userDetails)
-
 
 
 @app.route('/configure.html', methods=['GET', 'POST',  'PUT'])
@@ -209,11 +214,12 @@ def configure():
     institutionForm = newInstitution()
     rateForm = newRateType()
     if request.method == "POST":
-        try :
+        try:
             request.form['superName']
             cur = mysql.connection.cursor()
             superName = superForm.superName.data
-            cur.execute("INSERT INTO supervisors (superName) VALUES (%s)", ([superName]))
+            cur.execute(
+                "INSERT INTO supervisors (superName) VALUES (%s)", ([superName]))
             mysql.connection.commit()
             cur.close()
             return redirect("/configure.html")
@@ -223,7 +229,8 @@ def configure():
             request.form['deptName']
             cur = mysql.connection.cursor()
             deptName = deptForm.deptName.data
-            cur.execute("INSERT INTO departments (deptName) VALUES (%s)", ([deptName]))
+            cur.execute(
+                "INSERT INTO departments (deptName) VALUES (%s)", ([deptName]))
             mysql.connection.commit()
             cur.close()
             return redirect("/configure.html")
@@ -233,7 +240,8 @@ def configure():
             request.form['facultyName']
             cur = mysql.connection.cursor()
             facultyName = facultyForm.facultyName.data
-            cur.execute("INSERT INTO faculty (facultyName) VALUES (%s)", ([facultyName]))
+            cur.execute(
+                "INSERT INTO faculty (facultyName) VALUES (%s)", ([facultyName]))
             mysql.connection.commit()
             cur.close()
             return redirect("/configure.html")
@@ -243,7 +251,8 @@ def configure():
             request.form['institutionName']
             cur = mysql.connection.cursor()
             institutionName = institutionForm.institutionName.data
-            cur.execute("INSERT INTO institution (institutionName) VALUES (%s)", ([institutionName]))
+            cur.execute(
+                "INSERT INTO institution (institutionName) VALUES (%s)", ([institutionName]))
             mysql.connection.commit()
             cur.close()
             return redirect("/configure.html")
@@ -254,7 +263,8 @@ def configure():
             cur = mysql.connection.cursor()
             rateTypeName = rateForm.rateTypeName.data
             rateAmount = rateForm.rateAmount.data
-            cur.execute("INSERT INTO rateType (rateName, rateAmount) VALUES (%s, %s)", ([rateTypeName, rateAmount]))
+            cur.execute("INSERT INTO rateType (rateName, rateAmount) VALUES (%s, %s)", ([
+                        rateTypeName, rateAmount]))
             mysql.connection.commit()
             cur.close()
             return redirect("/configure.html")
@@ -272,16 +282,9 @@ def configure():
     rate = cur.execute("SELECT * FROM rateType")
     rate = cur.fetchall()
     return render_template("/configure.html",
-    supers=supers,
-    dept=dept,faculty=faculty,institution=institution,rate=rate,
-    superForm=superForm, deptForm=deptForm, facultyForm=facultyForm,
-    institutionForm=institutionForm,rateForm=rateForm )
-
-
-
-@app.route('/dataEdit.html', methods=['GET', 'POST',  'PUT'])
-def dataEditFunction():
-    return render_template('dataEdit.html')
+    supers=supers, dept=dept, faculty=faculty, institution=institution,
+    rate=rate,superForm=superForm, deptForm=deptForm, facultyForm=facultyForm,
+    institutionForm=institutionForm, rateForm=rateForm)
 
 
 @app.route('/reports.html', methods=['GET', 'POST',  'PUT'])
@@ -305,27 +308,110 @@ def reportFunction():
 @app.route("/uploadSuper", methods=["POST"])
 def uploadSuper():
     file = request.files['uploadSuper']
+    file.save('instance/uploads/Supervisors_file.xlsx')
     answers = pandas.read_excel(file)
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM supervisors")
     for item in answers['superName']:
-        cur.execute("INSERT INTO supervisors (superName) VALUES (%s)", ([item]))
+        cur.execute(
+            "INSERT INTO supervisors (superName) VALUES (%s)", ([item]))
+    mysql.connection.commit()
+    cur.close()
+    return redirect("/reports.html")
+
+@app.route("/uploadDepartments", methods=["POST"])
+def uploadDepartments():
+    file = request.files['uploadDepartments']
+    file.save('instance/uploads/Departments_file.xlsx')
+    answers = pandas.read_excel(file)
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM departments")
+    for item in answers['deptName']:
+        cur.execute(
+            "INSERT INTO departments (deptName) VALUES (%s)", ([item]))
+    mysql.connection.commit()
+    cur.close()
+    return redirect("/reports.html")
+
+@app.route("/uploadFaculty", methods=["POST"])
+def uploadFaculty():
+    file = request.files['uploadFaculty']
+    file.save('instance/uploads/Faculty_file.xlsx')
+    answers = pandas.read_excel(file)
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM faculty")
+    for item in answers['facultyName']:
+        cur.execute(
+            "INSERT INTO faculty (facultyName) VALUES (%s)", ([item]))
+    mysql.connection.commit()
+    cur.close()
+    return redirect("/reports.html")
+
+@app.route("/uploadInstitution", methods=["POST"])
+def uploadInstitution():
+    file = request.files['uploadInstitution']
+    file.save('instance/uploads/Institution_file.xlsx')
+    answers = pandas.read_excel(file)
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM institution")
+    for item in answers['institutionName']:
+        cur.execute(
+            "INSERT INTO institution (institutionName) VALUES (%s)", ([item]))
+    mysql.connection.commit()
+    cur.close()
+    return redirect("/reports.html")
+
+@app.route("/uploadRateType", methods=["POST"])
+def uploadRateType():
+    file = request.files['uploadRateType']
+    file.save('instance/uploads/RateType_file.xlsx')
+    answers = pandas.read_excel(file)
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM rateType")
+    names = answers['rateName']
+    rates = answers['rateAmount']
+    for x in range(0,names.size-1):
+        cur.execute("INSERT INTO rateType (rateName, rateAmount) VALUES (%s, %s)", ([names[x], rates[x]]))
+    mysql.connection.commit()
+    cur.close()
+    return redirect("/reports.html")
+
+
+@app.route("/uploadUsers", methods=["POST"])
+def uploadUsers():
+    file = request.files['uploadUsers']
+    file.save('instance/uploads/Users_file.xlsx')
+    answers = pandas.read_excel(file)
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM Users")
+    for item1,item2 in answers['rateType']:
+        cur.execute(
+            "INSERT INTO rateType (rateName, rateAmount) VALUES (%s, %s)", ([item1, item2]))
     mysql.connection.commit()
     cur.close()
     return redirect("/reports.html")
 
 
 
-@app.route('/logout.html')
-def logout():
-    return render_template('logout.html')
+
+# All report downloads to database files
+@app.route("/downloadSuper", methods=["POST"])
+def downloadSuper():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM supervisors')
+    pandaDataFrame = pandas.DataFrame(cur.fetchall())
+    pandaDataFrame.to_excel('instance/download.Supervisors_file.xlsx')
+    mysql.connection.commit()
+    cur.close()
+    return redirect("/reports.html")
 
 
-#All functions to delete things such as users, supers, institutions
+# All functions to delete things such as users, supers, institutions
 @app.route('/deleteUser/<string:userIdentificationNumber>')
 def deleteUser(userIdentificationNumber):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM users where userID=" + str(userIdentificationNumber))
+    cur.execute("DELETE FROM users where userID=" +
+                str(userIdentificationNumber))
     mysql.connection.commit()
     cur.close()
     form = makeNewUser()
@@ -335,7 +421,8 @@ def deleteUser(userIdentificationNumber):
 @app.route('/deleteSuper/<string:superIdentificationNumber>')
 def deleteSuper(superIdentificationNumber):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM supervisors where superID=" + str(superIdentificationNumber))
+    cur.execute("DELETE FROM supervisors where superID=" +
+                str(superIdentificationNumber))
     mysql.connection.commit()
     cur.close()
     return redirect("/configure.html")
@@ -344,71 +431,66 @@ def deleteSuper(superIdentificationNumber):
 @app.route('/deleteDepartment/<string:deptIdentificationNumber>')
 def deleteDepartment(deptIdentificationNumber):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM departments where deptID=" + str(deptIdentificationNumber))
+    cur.execute("DELETE FROM departments where deptID=" +
+                str(deptIdentificationNumber))
     mysql.connection.commit()
     cur.close()
     return redirect("/configure.html")
+
 
 @app.route('/deleteFaculty/<string:facultyIdentificationNumber>')
 def deleteFaculty(facultyIdentificationNumber):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM faculty where facultyID=" + str(facultyIdentificationNumber))
+    cur.execute("DELETE FROM faculty where facultyID=" +
+                str(facultyIdentificationNumber))
     mysql.connection.commit()
     cur.close()
     return redirect("/configure.html")
+
 
 @app.route('/deleteInstitution/<string:institutionIdentificationNumber>')
 def deleteInstitution(institutionIdentificationNumber):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM institution where institutionID=" + str(institutionIdentificationNumber))
+    cur.execute("DELETE FROM institution where institutionID=" +
+                str(institutionIdentificationNumber))
     mysql.connection.commit()
     cur.close()
     return redirect("/configure.html")
+
 
 @app.route('/deleteRate/<string:rateIdentificationNumber>')
 def deleteRate(rateIdentificationNumber):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM rateType where rateID=" + str(rateIdentificationNumber))
+    cur.execute("DELETE FROM rateType where rateID=" +
+                str(rateIdentificationNumber))
     mysql.connection.commit()
     cur.close()
     return redirect("/configure.html")
 
 
-
-def writeCSV(tableList):
-    writer = csv.writer(open("out.csv", 'w'))
-    for line in tableList:
-        writer.writerow(line)
-
-
 def writeUsageRecord(machine, time, userID):
     with app.app_context():
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO entries (machine,timeUsed, userID, inUse) VALUES (%s, %s, %s, %s);", (machine, time, userID, str(1)))
+        cur.execute("INSERT INTO entries (machine,timeUsed, userID, inUse) VALUES (%s, %s, %s, %s);",
+                    (machine, time, userID, str(1)))
         mysql.connection.commit()
         cur.close()
 
-def writeUsageRecord(machine, time, userID):
-    with app.app_context():
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO entries (machine,timeUsed, userID, inUse) VALUES (%s, %s, %s, %s);", (machine, time, userID, str(1)))
-        mysql.connection.commit()
-        cur.close()
 
 def machineStatus(machine):
     print("Updating machine status...")
     with app.app_context():
         cur = mysql.connection.cursor()
         select_stmt = "SELECT inUse FROM machines WHERE machine = %(machine)s"
-        cur.execute(select_stmt, { 'machine': machine })
+        cur.execute(select_stmt, {'machine': machine})
         status = cur.fetchone()
         print(status)
         print("The machine status is " + str(status[0]))
         if status[0] == 0:
             update_stmt = "UPDATE machines SET inUse = '1' WHERE machine = %(machine)s"
-            cur.execute(update_stmt, { 'machine': machine })
+            cur.execute(update_stmt, {'machine': machine})
         else:
             update_stmt = "UPDATE machines SET inUse = '0' WHERE machine = %(machine)s"
-            cur.execute(update_stmt, { 'machine': machine })
+            cur.execute(update_stmt, {'machine': machine})
         mysql.connection.commit()
         cur.close()
