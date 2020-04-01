@@ -8,8 +8,7 @@ import os
 import io
 import datetime
 import pandas
-
-
+import html
 app = Flask(__name__)
 
 # Configure db
@@ -31,7 +30,6 @@ def index():
 
 @app.route('/home.html', methods=['GET', 'POST',  'PUT'])
 def home():
-    machines = []
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM machines")
     machines = cur.fetchall()
@@ -61,10 +59,15 @@ def timeHelper(name, date, machine):
     value6 = 0
     value7 = 0
     units = "Number of Hours of Machine Use For All Users"
-    errorMessage=""
-    ####### Machine ADDRESS TABLE ##########
-    machineAddress = ["98:01:a7:8f:00:99", "b8:27:eb:61:98:05", "00:00:00:00:00:03", "00:00:00:00:00:04", "00:00:00:00:00:05", "00:00:00:00:00:06", "00:00:00:00:00:07"]
-    ####### Machine ADDRESS TABLE ##########
+    errorMessage = ""
+
+    # Get Machines
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM machines")
+    machines = cur.fetchall()
+    mysql.connection.commit()
+    cur.close()
+
     if name != '':
         units = "Number of Hours of Machine Use For " + name
         currentDate = datetime.date.today()
@@ -111,13 +114,17 @@ def timeHelper(name, date, machine):
                 elif usage[i][0].date() == sixDays:
                     value1 += sessionTime
     elif date != '':
-        label1 = "Machine 1"
-        label2 = "Machine 2"
-        label3 = "Machine 3"
-        label4 = "Machine 4"
-        label5 = "Machine 5"
-        label6 = "Machine 6"
-        label7 = "Machine 7"
+        labels = ["","","","","","",""]
+        for i in range(len(machines)):
+            labels[i] = machines[i][1]
+
+        label1 = labels[0]
+        label2 = labels[1]
+        label3 = labels[2]
+        label4 = labels[3]
+        label5 = labels[4]
+        label6 = labels[5]
+        label7 = labels[6]
         units = "Number of Hours of Machine Use For " + date
 
         cur = mysql.connection.cursor()
@@ -138,24 +145,28 @@ def timeHelper(name, date, machine):
                 for i in range(0, length, 2):
                     sessionTime = usage[i+1][0] - usage[i][0]
                     sessionTime = sessionTime.total_seconds() / 3600
-                    if usage[i][1] == machineAddress[0]:
-                        value1 += sessionTime
-                    elif usage[i][1] == machineAddress[1]:
-                        value2 += sessionTime
-                    elif usage[i][1] == machineAddress[2]:
-                        value3 += sessionTime
-                    elif usage[i][1] == machineAddress[3]:
-                        value4 += sessionTime
-                    elif usage[i][1] == machineAddress[4]:
-                        value5 += sessionTime
-                    elif usage[i][1] == machineAddress[5]:
-                        value6 += sessionTime
-                    elif usage[i][1] == machineAddress[6]:
-                        value7 += sessionTime
+
+                    for machine in machines:
+                        if usage[i][1] == machine[0]:
+                            value1 += sessionTime
+                        elif usage[i][1] == machine[0]:
+                            value2 += sessionTime
+                        elif usage[i][1] == machine[0]:
+                            value3 += sessionTime
+                        elif usage[i][1] == machine[0]:
+                            value4 += sessionTime
+                        elif usage[i][1] == machine[0]:
+                            value5 += sessionTime
+                        elif usage[i][1] == machine[0]:
+                            value6 += sessionTime
+                        elif usage[i][1] == machine[0]:
+                            value7 += sessionTime
 
     elif machine != '':
-        units = "Number of Hours of Machine Use For Machine " + machine[1]
-        machine = machineAddress[int(machine[1])-1]
+        # Get Selected Machine by mac
+        selected_mac = html.unescape(machine)
+
+        units = "Number of Hours of Machine Use For: " + machine[1]
         currentDate = datetime.date.today()
         yesterday = currentDate - datetime.timedelta(days=1)
         twoDays = currentDate - datetime.timedelta(days=2)
@@ -172,8 +183,9 @@ def timeHelper(name, date, machine):
         label7 = currentDate.strftime("%A") + " " + str(currentDate.day)
 
         cur = mysql.connection.cursor()
-        length = cur.execute("SELECT timeUsed FROM entries WHERE machine = (%s)", ([machine]))
+        length = cur.execute("SELECT timeUsed FROM entries WHERE machine = '{}'".format(selected_mac))
         usage = cur.fetchall()
+        print(usage)
         mysql.connection.commit()
         cur.close()
         if length == 0:
@@ -244,7 +256,7 @@ def timeHelper(name, date, machine):
                 elif usage[i][0].date() == sixDays:
                     value1 += sessionTime
 
-    return render_template('time.html', units=units, label1=label1, label2=label2, label3=label3, label4=label4, label5=label5, label6=label6, label7=label7, value1=value1, value2=value2, value3=value3, value4=value4, value5=value5, value6=value6, value7=value7, errorMessage=errorMessage)
+    return render_template('time.html', units=units, label1=label1, label2=label2, label3=label3, label4=label4, label5=label5, label6=label6, label7=label7, value1=value1, value2=value2, value3=value3, value4=value4, value5=value5, value6=value6, value7=value7, machines=machines, errorMessage=errorMessage)
   
 @app.route('/addUser.html', methods=['GET', 'POST',  'PUT'])
 def userFunction():
