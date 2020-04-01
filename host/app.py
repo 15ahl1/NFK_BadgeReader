@@ -31,31 +31,13 @@ def index():
 
 @app.route('/home.html', methods=['GET', 'POST',  'PUT'])
 def home():
+    machines = []
     cur = mysql.connection.cursor()
-    cur.execute("SELECT inUse FROM machines WHERE machine = '98:01:a7:8f:00:99'")
-    status = cur.fetchone()
-    status1 = status[0]
-    cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:02'")
-    status = cur.fetchone()
-    status2 = status[0]
-    cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:03'")
-    status = cur.fetchone()
-    status3 = status[0]
-    cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:04'")
-    status = cur.fetchone()
-    status4 = status[0]
-    cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:05'")
-    status = cur.fetchone()
-    status5 = status[0]
-    cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:06'")
-    status = cur.fetchone()
-    status6 = status[0]
-    cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:07'")
-    status = cur.fetchone()
-    status7 = status[0]
+    cur.execute("SELECT * FROM machines")
+    machines = cur.fetchall()
     mysql.connection.commit()
     cur.close()
-    return render_template("/home.html", machine1=status1, machine2=status2, machine3=status3, machine4=status4, machine5=status5, machine6=status6, machine7=status7)
+    return render_template("/home.html", machines=machines)
 
 
 @app.route('/time.html', methods=['GET', 'POST',  'PUT'])
