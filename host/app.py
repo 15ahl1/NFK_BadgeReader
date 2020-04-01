@@ -185,7 +185,6 @@ def timeHelper(name, date, machine):
         cur = mysql.connection.cursor()
         length = cur.execute("SELECT timeUsed FROM entries WHERE machine = '{}'".format(selected_mac))
         usage = cur.fetchall()
-        print(usage)
         mysql.connection.commit()
         cur.close()
         if length == 0:
