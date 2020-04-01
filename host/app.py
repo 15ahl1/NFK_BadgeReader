@@ -165,8 +165,15 @@ def timeHelper(name, date, machine):
     elif machine != '':
         # Get Selected Machine by mac
         selected_mac = html.unescape(machine)
+        # Get Machines Name
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT name from machines WHERE machine = '{}'".format(selected_mac))
+        name = cur.fetchone()
+        mysql.connection.commit()
+        cur.close()
 
-        units = "Number of Hours of Machine Use For: " + machine[1]
+
+        units = "Number of Hours of Machine Use For: " + name[0]
         currentDate = datetime.date.today()
         yesterday = currentDate - datetime.timedelta(days=1)
         twoDays = currentDate - datetime.timedelta(days=2)
