@@ -10,12 +10,8 @@
 
 {% else %}
 
-<h4>No data given</h4>
 
-
-
-{% endif %}
-
+    {% endif %}
   <div class="col">
     <form method="POST" action="">
       {{ form.csrf_token }}
@@ -38,5 +34,7 @@
     </form>
 
   </div>
+
+
 </div>
 {% endblock %}
