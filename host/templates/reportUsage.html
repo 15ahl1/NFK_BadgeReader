@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container content-section">
+
+  <table class="table">
+  <br><br>
+  <thead>
+  <tr>
+   <th scope="col">Machine Name</th>
+   <th scope="col">Time Used For</th>
+   <th scope="col">Rate Name</th>
+   <th scope="col">Rate Amount</th>
+   <th scope="col">Bill Amount</th>
+   <th scope="col">User Name</th>
+  </tr>
+  </thead>
+    {% for sessions in sessions %}
+    <tr>
+      <td> {{sessions[2]}} </td>
+      <td> {{sessions[5]}} Hours</td>
+      <td> {{sessions[7]}} </td>
+      <td> {{sessions[6]}} </td>
+      <td> ${{sessions[8]}} </td>
+      <td> {{sessions[10]}} </td>
+      <td><a href="/editSession/{{session[0]}}" <button type="button" class="float-right btn btn-warning">Edit</button></td>
+    </tr>
+    {% endfor %}
+  </table>
+
+
+{{entries}}
+
+</div>
+
+
+{% endblock %}

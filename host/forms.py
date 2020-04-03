@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, FormField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, FormField, DecimalField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, NumberRange, MacAddress
 from flask_mysqldb import MySQL
 import yaml
 from app import *
@@ -9,31 +9,26 @@ class userTime(FlaskForm):
     userName = StringField('Username', validators=[DataRequired(), Length(min=2,max=20)])
     submit = SubmitField("Submit")
 
+class makeNewMachine(FlaskForm):
+    MachineName = StringField('Name', validators=[DataRequired(), Length(min=2,max=100)])
+    MachineMacAddress = StringField('Mac Address', validators=[DataRequired("This field is reqired and must be a valid MAC Address"), MacAddress()])
+    academicAmount = DecimalField('Academic Rate', validators=[DataRequired("This field is reqired and must be a number"), NumberRange(min=0, max=10000000)])
+    industrialAmount = DecimalField('Industrial Rate', validators=[DataRequired("This field is reqired and must be a number"), NumberRange(min=0, max=10000000)])
+    submit = SubmitField("Submit")
+
+class editCurrentUser(FlaskForm):
+    userName = SelectField('Select User to Edit')
+    submit = SubmitField("Submit")
+
 
 class makeNewUser(FlaskForm):
     userName = StringField('Username', validators=[DataRequired(), Length(min=2,max=40)])
     userPin = StringField('UserPIN', validators=[DataRequired(), Length(min=2,max=100)])
-    supervisor = SelectField(
-        'Supervisor',
-        choices=[('Queens University','Queens University')]
-    )
-    department = SelectField(
-        'Department',
-        choices=[('Queens University','Queens University'), ('SUPER2', 'SUPER2'), ('SUPER3', 'SUPER3')]
-    )
-    faculty = SelectField(
-        'Faculty',
-        choices=[('Queens University','Queens University'), ('SUPER2', 'SUPER2'), ('SUPER3', 'SUPER3')]
-    )
-    institution = SelectField(
-        'Institution',
-        choices=[('Queens University','Queens University'), ('SUPER2', 'SUPER2'), ('SUPER3', 'SUPER3')]
-    )
-    rateType = SelectField(
-        'Rate Type',
-        choices=[('Academic', 'Academic'), ('Industrial', 'Industrial')]
-    )
-
+    supervisor = SelectField('Supervisor')
+    department = SelectField('Department',)
+    faculty = SelectField('Faculty')
+    institution = SelectField('Institution')
+    rateType = SelectField('Rate Type')
     perMac1 = BooleanField('Machine 1')
     perMac2 = BooleanField('Machine 2')
     perMac3 = BooleanField('Machine 3')
@@ -42,7 +37,6 @@ class makeNewUser(FlaskForm):
     perMac6 = BooleanField('Machine 6')
     perMac7 = BooleanField('Machine 7')
     submit = SubmitField("Submit")
-
 
 class newSupervisor(FlaskForm):
     superName = StringField('Supervisor Name', validators=[DataRequired(), Length(min=2,max=20)])
@@ -62,5 +56,5 @@ class newInstitution(FlaskForm):
 
 class newRateType(FlaskForm):
     rateTypeName = StringField('Rate Name', validators=[DataRequired(), Length(min=2,max=20)])
-    rateAmount = StringField('Rate Amount', validators=[DataRequired(), Length(min=2,max=20)])
+    rateAmount = DecimalField('Rate Amount')
     submit = SubmitField("Submit")
