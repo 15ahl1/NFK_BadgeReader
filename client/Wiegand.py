@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Reads and converts wiegand codes to decimal format
 import time
 import pigpio
 

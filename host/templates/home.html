@@ -1,116 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="container">
+<div class="container">
     <div class="jumbotron">
-    <div class="row">
-      <div class="col-sm">
-        <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Machine 1</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Status:</h6>
+        <div class="wrapper" style="display: grid; grid-template-columns: repeat(3, 1fr);grid-gap: 10px;">
+            {% for machine in machines %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{machine[1]}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Status:</h6>
 
-          {% if machine1 < 1 %}
-            <p class="card-text" style="color:green">Open</p>
-          {% else %}
-            <p class="card-text" style="color:red">In Use</p>
-          {% endif %}
+                    {% if machine[2] < 1 %}
+                    <p class="card-text" style="color:green">Open</p>
+                    {% else %}
+                    <p class="card-text" style="color:red">In Use</p>
+                    {% endif %}
 
-          <a href="time.html?userName=&date=&machineNumber=m1" class="card-link">See Usage</a>
+                    <a href="time.html?userName=&date=&machineNumber={{machine[0]}}" class="card-link">See Usage</a>
+                </div>
+            </div>
 
+            {% endfor %}
         </div>
-      </div>
-      </div>
-      <div class="col-sm">
-        <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Machine 2</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Status:</h6>
 
-          {% if machine2 < 1 %}
-            <p class="card-text" style="color:green">Open</p>
-          {% else %}
-            <p class="card-text" style="color:red">In Use</p>
-          {% endif %}
-
-          <a href="time.html?userName=&date=&machineNumber=m2" class="card-link">See Usage</a>
-
-        </div>
-      </div>
-      </div>
-      <div class="col-sm">
-        <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Machine 3</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Status:</h6>
-
-          {% if machine3 < 1 %}
-            <p class="card-text" style="color:green">Open</p>
-          {% else %}
-            <p class="card-text" style="color:red">In Use</p>
-          {% endif %}
-
-          <a href="time.html?userName=&date=&machineNumber=m3" class="card-link">See Usage</a>
-
-        </div>
-      </div>
-      </div>
     </div>
-    </div>
-
-<div class="jumbotron">
-    <div class="row">
-      <div class="col-sm">
-        <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Machine 4</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Status:</h6>
-
-          {% if machine4 < 1 %}
-            <p class="card-text" style="color:green">Open</p>
-          {% else %}
-            <p class="card-text" style="color:red">In Use</p>
-          {% endif %}
-
-          <a href="time.html?userName=&date=&machineNumber=m4" class="card-link">See Usage</a>
-
-        </div>
-      </div>
-      </div>
-      <div class="col-sm">
-        <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Machine 5</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Status:</h6>
-
-          {% if machine5 < 1 %}
-            <p class="card-text" style="color:green">Open</p>
-          {% else %}
-            <p class="card-text" style="color:red">In Use</p>
-          {% endif %}
-
-          <a href="time.html?userName=&date=&machineNumber=m5" class="card-link">See Usage</a>
-
-        </div>
-      </div>
-      </div>
-      <div class="col-sm">
-        <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Machine 6</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Status:</h6>
-
-          {% if machine6 < 1 %}
-            <p class="card-text" style="color:green">Open</p>
-          {% else %}
-            <p class="card-text" style="color:red">In Use</p>
-          {% endif %}
-
-          <a href="time.html?userName=&date=&machineNumber=m6" class="card-link">See Usage</a>
-
-        </div>
-      </div>
-      </div>
-    </div>
-  </div>
 </div>
 {% endblock %}

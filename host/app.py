@@ -8,7 +8,8 @@ import os
 import io
 import datetime
 import pandas
-
+import html
+import decimal
 
 app = Flask(__name__)
 
@@ -32,30 +33,11 @@ def index():
 @app.route('/home.html', methods=['GET', 'POST',  'PUT'])
 def home():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT inUse FROM machines WHERE machine = '98:01:a7:8f:00:99'")
-    status = cur.fetchone()
-    status1 = status[0]
-    cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:02'")
-    status = cur.fetchone()
-    status2 = status[0]
-    cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:03'")
-    status = cur.fetchone()
-    status3 = status[0]
-    cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:04'")
-    status = cur.fetchone()
-    status4 = status[0]
-    cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:05'")
-    status = cur.fetchone()
-    status5 = status[0]
-    cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:06'")
-    status = cur.fetchone()
-    status6 = status[0]
-    cur.execute("SELECT inUse FROM machines WHERE machine = '00:00:00:00:00:07'")
-    status = cur.fetchone()
-    status7 = status[0]
+    cur.execute("SELECT * FROM machines")
+    machines = cur.fetchall()
     mysql.connection.commit()
     cur.close()
-    return render_template("/home.html", machine1=status1, machine2=status2, machine3=status3, machine4=status4, machine5=status5, machine6=status6, machine7=status7)
+    return render_template("/home.html", machines=machines)
 
 
 @app.route('/time.html', methods=['GET', 'POST',  'PUT'])
@@ -79,10 +61,15 @@ def timeHelper(name, date, machine):
     value6 = 0
     value7 = 0
     units = "Number of Hours of Machine Use For All Users"
-    errorMessage=""
-    ####### Machine ADDRESS TABLE ##########
-    machineAddress = ["98:01:a7:8f:00:99", "b8:27:eb:61:98:05", "00:00:00:00:00:03", "00:00:00:00:00:04", "00:00:00:00:00:05", "00:00:00:00:00:06", "00:00:00:00:00:07"]
-    ####### Machine ADDRESS TABLE ##########
+    errorMessage = ""
+
+    # Get Machines
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM machines")
+    machines = cur.fetchall()
+    mysql.connection.commit()
+    cur.close()
+
     if name != '':
         units = "Number of Hours of Machine Use For " + name
         currentDate = datetime.date.today()
@@ -129,13 +116,17 @@ def timeHelper(name, date, machine):
                 elif usage[i][0].date() == sixDays:
                     value1 += sessionTime
     elif date != '':
-        label1 = "Machine 1"
-        label2 = "Machine 2"
-        label3 = "Machine 3"
-        label4 = "Machine 4"
-        label5 = "Machine 5"
-        label6 = "Machine 6"
-        label7 = "Machine 7"
+        labels = ["","","","","","",""]
+        for i in range(len(machines)):
+            labels[i] = machines[i][1]
+
+        label1 = labels[0]
+        label2 = labels[1]
+        label3 = labels[2]
+        label4 = labels[3]
+        label5 = labels[4]
+        label6 = labels[5]
+        label7 = labels[6]
         units = "Number of Hours of Machine Use For " + date
 
         cur = mysql.connection.cursor()
@@ -156,24 +147,35 @@ def timeHelper(name, date, machine):
                 for i in range(0, length, 2):
                     sessionTime = usage[i+1][0] - usage[i][0]
                     sessionTime = sessionTime.total_seconds() / 3600
-                    if usage[i][1] == machineAddress[0]:
-                        value1 += sessionTime
-                    elif usage[i][1] == machineAddress[1]:
-                        value2 += sessionTime
-                    elif usage[i][1] == machineAddress[2]:
-                        value3 += sessionTime
-                    elif usage[i][1] == machineAddress[3]:
-                        value4 += sessionTime
-                    elif usage[i][1] == machineAddress[4]:
-                        value5 += sessionTime
-                    elif usage[i][1] == machineAddress[5]:
-                        value6 += sessionTime
-                    elif usage[i][1] == machineAddress[6]:
-                        value7 += sessionTime
+
+                    for machine in machines:
+                        if usage[i][1] == machine[0]:
+                            value1 += sessionTime
+                        elif usage[i][1] == machine[0]:
+                            value2 += sessionTime
+                        elif usage[i][1] == machine[0]:
+                            value3 += sessionTime
+                        elif usage[i][1] == machine[0]:
+                            value4 += sessionTime
+                        elif usage[i][1] == machine[0]:
+                            value5 += sessionTime
+                        elif usage[i][1] == machine[0]:
+                            value6 += sessionTime
+                        elif usage[i][1] == machine[0]:
+                            value7 += sessionTime
 
     elif machine != '':
-        units = "Number of Hours of Machine Use For Machine " + machine[1]
-        machine = machineAddress[int(machine[1])-1]
+        # Get Selected Machine by mac
+        selected_mac = html.unescape(machine)
+        # Get Machines Name
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT name from machines WHERE machine = '{}'".format(selected_mac))
+        name = cur.fetchone()
+        mysql.connection.commit()
+        cur.close()
+
+
+        units = "Number of Hours of Machine Use For: " + name[0]
         currentDate = datetime.date.today()
         yesterday = currentDate - datetime.timedelta(days=1)
         twoDays = currentDate - datetime.timedelta(days=2)
@@ -190,7 +192,7 @@ def timeHelper(name, date, machine):
         label7 = currentDate.strftime("%A") + " " + str(currentDate.day)
 
         cur = mysql.connection.cursor()
-        length = cur.execute("SELECT timeUsed FROM entries WHERE machine = (%s)", ([machine]))
+        length = cur.execute("SELECT timeUsed FROM entries WHERE machine = '{}'".format(selected_mac))
         usage = cur.fetchall()
         mysql.connection.commit()
         cur.close()
@@ -262,8 +264,8 @@ def timeHelper(name, date, machine):
                 elif usage[i][0].date() == sixDays:
                     value1 += sessionTime
 
-    return render_template('time.html', units=units, label1=label1, label2=label2, label3=label3, label4=label4, label5=label5, label6=label6, label7=label7, value1=value1, value2=value2, value3=value3, value4=value4, value5=value5, value6=value6, value7=value7, errorMessage=errorMessage)
-  
+    return render_template('time.html', units=units, label1=label1, label2=label2, label3=label3, label4=label4, label5=label5, label6=label6, label7=label7, value1=value1, value2=value2, value3=value3, value4=value4, value5=value5, value6=value6, value7=value7, machines=machines, errorMessage=errorMessage)
+
 @app.route('/addUser.html', methods=['GET', 'POST',  'PUT'])
 def userFunction():
     form = makeNewUser()
@@ -388,10 +390,15 @@ def configure():
             cur = mysql.connection.cursor()
             rateTypeName = rateForm.rateTypeName.data
             rateAmount = rateForm.rateAmount.data
-            cur.execute("INSERT INTO rateType (rateName, rateAmount) VALUES (%s, %s)", ([
-                        rateTypeName, rateAmount]))
-            mysql.connection.commit()
-            cur.close()
+            if str(rateAmount)=="None":
+                cur.execute("INSERT INTO rateType (rateName, rateAmount) VALUES (%s, %s)", ([rateTypeName, str(rateTypeName)+" Machine Dependant"]))
+                mysql.connection.commit()
+                cur.close()
+            else:
+                cur.execute("INSERT INTO rateType (rateName, rateAmount) VALUES (%s, %s)", ([
+                            rateTypeName, rateAmount]))
+                mysql.connection.commit()
+                cur.close()
             return redirect("/configure.html")
         except:
             pass
@@ -412,6 +419,30 @@ def configure():
     institutionForm=institutionForm, rateForm=rateForm)
 
 
+
+
+@app.route('/addMachine.html', methods=['GET', 'POST',  'PUT'])
+def machineFunction():
+    form = makeNewMachine()
+    cur = mysql.connection.cursor()
+    machines = cur.execute("SELECT * FROM machines")
+    machines = cur.fetchall()
+    message=""
+    if form.validate_on_submit():
+        message = "New Machine Made"
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO machines(machine, name, inUse,  academicRate, institutionalRate) VALUES (%s, %s, %s,%s, %s)", ([form.MachineMacAddress.data,form.MachineName.data, 0, form.academicAmount.data, form.industrialAmount.data]))
+        mysql.connection.commit()
+        cur.close()
+        cur = mysql.connection.cursor()
+        machines = cur.execute("SELECT * FROM machines")
+        machines = cur.fetchall()
+        return render_template("/addMachine.html", message=message, machines=machines, form=form)
+    return render_template("/addMachine.html", machines=machines, form=form)
+
+
+
+
 @app.route('/reports.html', methods=['GET', 'POST',  'PUT'])
 def reportFunction():
     cur = mysql.connection.cursor()
@@ -427,6 +458,31 @@ def reportFunction():
     rate = cur.fetchall()
     return render_template("/reports.html",
     supers=supers, dept=dept, faculty=faculty, institution=institution, rate=rate)
+
+
+@app.route('/editUser.html', methods=['GET', 'POST',  'PUT'])
+
+
+def editUserFunction():
+    form = editCurrentUser()
+    cur = mysql.connection.cursor()
+    users = cur.execute("SELECT userID, username FROM users ORDER BY username")
+    users = cur.fetchall()
+    form.userName.choices = users
+    if request.method == "POST":
+        info = request.form['userName']
+        hello = "yo what up"
+        return render_template("/editUser.html", form=form, data=info,hello=hello)
+    return render_template("/editUser.html", form=form)
+
+
+@app.route('/reportUsage.html', methods=['GET', 'POST',  'PUT'])
+def reportUsageFunction():
+    cur = mysql.connection.cursor()
+    sessions = cur.execute("SELECT * FROM sessions")
+    sessions = cur.fetchall()
+    return render_template("/reportUsage.html", sessions=sessions)
+
 
 
 # All report upload to database files
@@ -524,6 +580,10 @@ def uploadUsers():
 def downloadSuper():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM supervisors')
+    wb = Workbook()
+    ws = wb.active
+
+
     pandaDataFrame = pandas.DataFrame(cur.fetchall())
     pandaDataFrame.to_excel('instance/download.Supervisors_file.xlsx')
     mysql.connection.commit()
@@ -592,14 +652,89 @@ def deleteRate(rateIdentificationNumber):
     cur.close()
     return redirect("/configure.html")
 
+@app.route('/deleteMachine/<string:MachineIdentification>')
+def deleteMachine(MachineIdentification):
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM machines where name=\"" + str(MachineIdentification) + "\"")
+    mysql.connection.commit()
+    cur.close()
+    return redirect("/addMachine.html")
+
+
+
+@app.route('/editSession/<string:SessionID>')
+def editSession(SessionID):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM sessions where sessionID=\"" + str(SessionID) + "\"")
+    mysql.connection.commit()
+    cur.close()
+    return redirect("/addMachine.html")
 
 def writeUsageRecord(machine, time, userID):
     with app.app_context():
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO entries (machine,timeUsed, userID, inUse) VALUES (%s, %s, %s, %s);",
-                    (machine, time, userID, str(1)))
+        cur.execute("INSERT INTO entries (machine,timeUsed, userID, inUse, enteredSession) VALUES (%s, %s, %s, %s, %s);",
+                    (machine, time, userID, str(1), str(0)))
         mysql.connection.commit()
         cur.close()
+        cur = mysql.connection.cursor()
+        select_stmt = "SELECT * FROM entries WHERE machine = %(machine)s and userID = %(userID)s and enteredSession=\'0\'"
+        entries = cur.execute(select_stmt, {'machine': machine,'userID':userID })
+        entries = cur.fetchall()
+        if len(entries)==2:
+            select_stmt = "SELECT * FROM users WHERE userPin = %(userPin)s"
+            user = cur.execute(select_stmt, {'userPin':userID })
+            user = cur.fetchall()
+
+            select_stmt = "SELECT * FROM machines WHERE machine = %(machine)s"
+            machineData = cur.execute(select_stmt, {'machine':machine })
+            machineData = cur.fetchall()
+
+
+            if user[0][7]=="Academic Machine Dependant":
+                rateUsed = machineData[0][3]
+            elif user[0][7]=="Institutional Machine Dependant":
+                rateUsed = machineData[0][4]
+            else:
+                rateUsed = user[0][7]
+
+            diff = entries[1][2] - entries[0][2]
+            days, seconds = diff.days, diff.seconds
+            hours = decimal.Decimal(days * 24 + seconds // 3600)
+            minutes = decimal.Decimal((seconds % 3600) // 60)
+            seconds = decimal.Decimal(seconds % 60)
+
+            rateUsed = decimal.Decimal(rateUsed)
+            timeUsed = str(hours) + " Hours " + str(minutes) + " Minutes " + str(seconds) + " Seconds "
+            timeUSedDecimal = decimal.Decimal(hours) + (minutes/decimal.Decimal(60)) + (seconds/decimal.Decimal(3600))
+            billAmount = rateUsed * hours + rateUsed * (minutes/decimal.Decimal(60)) + rateUsed * (seconds/decimal.Decimal(60*60))
+
+            record = [machine,machineData[0][1],entries[0][2],entries[1][2],timeUsed,rateUsed,user[0][7],billAmount, userID,user[0][1]]
+
+            # Make sessions record
+            select_stmt = "INSERT INTO sessions(machineID,machineName,sessionStart,sessionEnd,timeUsed,rateUsed,rateTypeUsed,billAmount,userID,userName) VALUES(%(machineID)s,%(machineName)s,%(sessionStart)s,%(sessionEnd)s,%(timeUsed)s,%(rateUsed)s,%(rateTypeUsed)s,%(billAmount)s,%(userID)s, %(userName)s);"
+            cur.execute(select_stmt, {'machineID': machine,'machineName':machineData[0][1],'sessionStart': entries[0][2],'sessionEnd':entries[1][2],'timeUsed': timeUSedDecimal,'rateUsed':rateUsed,'rateTypeUsed': user[0][7],'billAmount':billAmount,'userID': userID,'userName':user[0][1]})
+            mysql.connection.commit()
+            cur.close()
+
+            # Update entries table to show that the entries have been moved over to the sessions table
+            cur = mysql.connection.cursor()
+            select_stmt = "update entries set enteredSession=1 where entrieID= %(entrieID)s;"
+            cur.execute(select_stmt, {'entrieID': entries[0][0]})
+            mysql.connection.commit()
+            select_stmt = "update entries set enteredSession=1 where entrieID= %(entrieID)s;"
+            cur.execute(select_stmt, {'entrieID': entries[1][0]})
+            mysql.connection.commit()
+            cur.close()
+
+
+
+
+
+
+
+
+
 
 
 def machineStatus(machine):

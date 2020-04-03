@@ -23,13 +23,9 @@
         <label for="validationCustom04"><strong>Machine</strong></label>
         <select class="custom-select" id="machineNumber" name="machineNumber">
           <option selected disabled value="">Choose...</option>
-          <option value="m1">Machine 1</option>
-          <option value="m2">Machine 2</option>
-          <option value="m3">Machine 3</option>
-          <option value="m4">Machine 4</option>
-          <option value="m5">Machine 5</option>
-          <option value="m6">Machine 6</option>
-          <option value="m7">Machine 7</option>
+          {% for machine in machines %}
+          <option value="{{machine[0]}}">{{machine[1]}}</option>
+          {% endfor %}
         </select>
         <br>
         <br>
