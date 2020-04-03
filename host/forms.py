@@ -10,7 +10,7 @@ class userTime(FlaskForm):
     submit = SubmitField("Submit")
 
 class makeNewMachine(FlaskForm):
-    MachineName = StringField('Name', validators=[DataRequired(), Length(min=2,max=100)])
+    MachineName = StringField('Name', description="test", validators=[DataRequired(), Length(min=2,max=100)])
     MachineMacAddress = StringField('Mac Address', validators=[DataRequired("This field is reqired and must be a valid MAC Address"), MacAddress()])
     academicAmount = DecimalField('Academic Rate', validators=[DataRequired("This field is reqired and must be a number"), NumberRange(min=0, max=10000000)])
     industrialAmount = DecimalField('Industrial Rate', validators=[DataRequired("This field is reqired and must be a number"), NumberRange(min=0, max=10000000)])
@@ -23,7 +23,7 @@ class editCurrentUser(FlaskForm):
 
 class makeNewUser(FlaskForm):
     userName = StringField('Username', validators=[DataRequired(), Length(min=2,max=40)])
-    userPin = StringField('UserPIN', validators=[DataRequired(), Length(min=2,max=100)])
+    userPin = StringField('Card Number', validators=[DataRequired(), Length(min=2,max=100)])
     supervisor = SelectField('Supervisor')
     department = SelectField('Department',)
     faculty = SelectField('Faculty')

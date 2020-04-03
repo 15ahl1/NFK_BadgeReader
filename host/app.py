@@ -442,6 +442,30 @@ def machineFunction():
 
 
 
+@app.route('/editMachine/<string:machineID>', methods=['GET', 'POST'])
+def editMachine(machineID):
+    cur = mysql.connection.cursor()
+    machines = cur.execute("SELECT * FROM machines")
+    machines = cur.fetchall()
+    Editform = makeNewMachine()
+    editMachine = cur.execute("SELECT machine, name, academicRate, institutionalRate FROM machines WHERE machineID=\"" + str(machineID) + "\"")
+    editMachine = cur.fetchall()
+    cur.close()
+    Editform.MachineName.data = editMachine[0][1]
+    Editform.MachineMacAddress.data = editMachine[0][0]
+    Editform.academicAmount.data = editMachine[0][2]
+    Editform.industrialAmount.data = editMachine[0][3]
+    if request.method == "POST":
+        print("Hello from the endi tmaching posting " + request.form.get("industrialAmount"))
+        cur = mysql.connection.cursor()
+        select_stmt = "UPDATE machines SET machine = %(machine)s, name = %(name)s, academicRate = %(academicRate)s, institutionalRate = %(institutionalRate)s WHERE machineID= %(machineID)s;"
+        cur.execute(select_stmt, {'machine': request.form.get("MachineMacAddress"), 'name': request.form.get("MachineName"), 'academicRate':request.form.get("academicAmount"), 'institutionalRate': request.form.get("industrialAmount"), 'machineID': str(machineID)})
+        mysql.connection.commit()
+        return redirect("/addMachine.html")
+    return render_template("/addMachine.html", machines=machines, form=Editform)
+
+
+
 
 @app.route('/reports.html', methods=['GET', 'POST',  'PUT'])
 def reportFunction():
@@ -460,10 +484,9 @@ def reportFunction():
     supers=supers, dept=dept, faculty=faculty, institution=institution, rate=rate)
 
 
+@app.route('/editUser/<userID>', methods=['GET', 'POST',  'PUT'])
 @app.route('/editUser.html', methods=['GET', 'POST',  'PUT'])
-
-
-def editUserFunction():
+def editUserFunction(userID = None):
     form = editCurrentUser()
     cur = mysql.connection.cursor()
     users = cur.execute("SELECT userID, username FROM users ORDER BY username")
@@ -471,6 +494,10 @@ def editUserFunction():
     form.userName.choices = users
     if request.method == "POST":
         info = request.form['userName']
+        hello = "yo what up"
+        return render_template("/editUser.html", form=form, data=info,hello=hello)
+    if userID:
+        info = userID
         hello = "yo what up"
         return render_template("/editUser.html", form=form, data=info,hello=hello)
     return render_template("/editUser.html", form=form)
@@ -726,12 +753,6 @@ def writeUsageRecord(machine, time, userID):
             cur.execute(select_stmt, {'entrieID': entries[1][0]})
             mysql.connection.commit()
             cur.close()
-
-
-
-
-
-
 
 
 

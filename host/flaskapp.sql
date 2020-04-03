@@ -28,7 +28,8 @@ CREATE TABLE machines(
   name varchar(100),
   inUse boolean,
   academicRate decimal,
-  institutionalRate decimal
+  institutionalRate decimal,
+  machineID int not null auto_increment PRIMARY KEY
 );
 
 CREATE TABLE machine1 (

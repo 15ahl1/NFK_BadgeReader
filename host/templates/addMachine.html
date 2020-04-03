@@ -3,13 +3,13 @@
 {% block content %}
 
 <div class="container content-section">
-<h4>Make a new machine</h4>
+  <h4>Make a new machine</h4>
   {%if message%}
   <div class="alert alert-success alert-dismissible fade show" role="alert">
     {{message}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-  <span aria-hidden="true">&times;</span>
-</button>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
   {% endif %}
 
@@ -73,28 +73,32 @@
   </div>
 </div>
 
+
+
 <div class="container content-section">
-  <h3>All Machines</h3>
-    <table class="table">
+  <table class="table">
     <br><br>
     <thead>
-   <tr>
-     <th scope="col">Machine Name</th>
-     <th scope="col">Academic Rate</th>
-     <th scope="col">Institutional Rate</th>
-   </tr>
- </thead>
-      {% for machine in machines %}
       <tr>
-        <td> {{machine[1]}} </td>
-        <td> {{machine[3]}} </td>
-        <td> {{machine[4]}} </td>
-        <td><a href="/EditMachine/{{machine[1]}}" <button type="button" class="btn btn-warning">Edit</button></td>
-        <td><a href="/deleteMachine/{{machine[1]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
+        <th scope="col">
+          <h3>Machine Name's:</h3>
+        </th>
+        <th scope="col">Academic Rate</th>
+        <th scope="col">Institutional Rate</th>
+        <th scope="col"> </th>
+        <th scope="col"> </th>
       </tr>
-      {% endfor %}
-    </table>
-  </div>
-
+    </thead>
+    {% for machine in machines %}
+    <tr>
+      <td> {{machine[1]}} </td>
+      <td> {{machine[3]}} </td>
+      <td> {{machine[4]}} </td>
+      <td><a href="/editMachine/{{machine[5]}}" <button type="button" class="float-right btn btn-warning">Edit</button></td>
+      <td><a href="/deleteMachine/{{machine[1]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
 
 {% endblock %}
