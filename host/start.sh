@@ -8,6 +8,6 @@ sudo pip3 install pandas
 sudo pip3 install openpyxl
 service mysql stop
 service mysql start
-mysql -uroot
-
 echo "Installation Complete"
+clear
+mysql -uroot
