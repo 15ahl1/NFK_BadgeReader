@@ -21,14 +21,22 @@ CREATE TABLE entries(
   enteredSession boolean
 );
 
+CREATE TABLE openCardNumber(
+  cardID int not null auto_increment PRIMARY KEY,
+  cardNumber varchar(50),
+  timeUsed datetime
+);
+
+
+
 
 
 CREATE TABLE machines(
   machine varchar(50),
   name varchar(100),
   inUse boolean,
-  academicRate decimal,
-  institutionalRate decimal,
+  academicRate decimal(8,2),
+  institutionalRate decimal(8,2),
   machineID int not null auto_increment PRIMARY KEY
 );
 
@@ -104,7 +112,7 @@ CREATE TABLE sessions (
 INSERT INTO sessions(machineID,machineName,sessionStart,sessionEnd,timeUsed,rateUsed,rateTypeUsed,billAmount,userID,userName)
 VALUES("98:01:a7:8f:00:99","Oxford Lasers Micromachining Laser","2020-03-29 00:09:40","2020-03-29 00:012:40",3.45,"22","Academic",23.33,"12345", "Michael Reinhart");
 
-INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('98:01:a7:8f:00:99', 'Oxford Lasers Micromachining Laser', '0',66, 99);
+INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('98:01:a7:8f:00:99', 'Oxford Lasers Micromachining Laser', '0',66.99, 99.25);
 INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('b8:27:eb:61:98:05', 'Raith Pioneer Electron-beam', '0', 6, 99);
 INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('00:00:00:00:00:03', 'NxQ 4006 Mask Aligner', '0',6, 99);
 INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('00:00:00:00:00:04', 'IMP SF-100 Xpress Maskless Photolithography System','0', 6, 99);
@@ -122,6 +130,10 @@ INSERT INTO `faculty` (`facultyName`) VALUES ('CMC');
 INSERT INTO `institution` (`institutionName`) VALUES ('CMC');
 INSERT INTO `rateType` (`ratename`, `rateAmount`) VALUES ('Regular Usage', "22");
 INSERT INTO `rateType` (`ratename`, `rateAmount`) VALUES ('Service Project', "33");
+
+
+INSERT INTO openCardNumber(cardNumber, timeUsed) values ('12345676766','2020-03-29 00:09:40');
+INSERT INTO openCardNumber(cardNumber, timeUsed) values ('8585','2020-08-29 00:09:40');
 
 
 -- Three Sessions

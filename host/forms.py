@@ -11,7 +11,7 @@ class userTime(FlaskForm):
 
 class makeNewMachine(FlaskForm):
     MachineName = StringField('Name', description="test", validators=[DataRequired(), Length(min=2,max=100)])
-    MachineMacAddress = StringField('Mac Address', validators=[DataRequired("This field is reqired and must be a valid MAC Address"), MacAddress()])
+    MachineMacAddress = StringField('Mac Address', validators=[DataRequired("This field is reqired and must be a valid MAC Address e.g. 98:01:a7:8f:00:99"), MacAddress()])
     academicAmount = DecimalField('Academic Rate', validators=[DataRequired("This field is reqired and must be a number"), NumberRange(min=0, max=10000000)])
     industrialAmount = DecimalField('Industrial Rate', validators=[DataRequired("This field is reqired and must be a number"), NumberRange(min=0, max=10000000)])
     submit = SubmitField("Submit")
