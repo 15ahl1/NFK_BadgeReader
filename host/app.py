@@ -286,6 +286,8 @@ def userFunction():
     form.faculty.choices = faculty
     form.institution.choices = institution
     form.rateType.choices = rate
+    message = cur.execute("SELECT DISTINCT cardNumber, timeUsed FROM openCardNumber")
+    message = cur.fetchall()
     if request.method == "POST":
         permissionString = ""
         if(form.perMac1.data == True):
@@ -325,12 +327,22 @@ def userFunction():
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO users(username, userPin, supervisor, department, faculty, institution, rateType, Permissions) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", ([form.userName.data, form.userPin.data, form.supervisor.data, form.department.data, form.faculty.data, form.institution.data, form.rateType.data, permissionString]))
         mysql.connection.commit()
+        select_stmt = "DELETE FROM openCardNumber WHERE cardNumber=%(userPin)s"
+        cur.execute(select_stmt, {'userPin': form.userPin.data})
+        mysql.connection.commit()
+        cur.close()
+
+    # select_stmt = "UPDATE machines SET machine = %(machine)s, name = %(name)s, academicRate = %(academicRate)s, institutionalRate = %(institutionalRate)s WHERE machineID= %(machineID)s;"
+    # cur.execute(select_stmt, {'machine': request.form.get("MachineMacAddres
+
+
+
         cur.close()
         return redirect('addUser.html')
     cur = mysql.connection.cursor()
     resultValue = cur.execute("SELECT * FROM users")
     userDetails = cur.fetchall()
-    return render_template('addUser.html', form=form, userDetails=userDetails)
+    return render_template('addUser.html', form=form, userDetails=userDetails, message=message)
 
 
 @app.route('/configure.html', methods=['GET', 'POST',  'PUT'])
@@ -442,7 +454,7 @@ def machineFunction():
 
 
 
-@app.route('/editMachine/<string:machineID>', methods=['GET', 'POST'])
+@app.route('/editMachine/string:<machineID>', methods=['GET', 'POST'])
 def editMachine(machineID):
     cur = mysql.connection.cursor()
     machines = cur.execute("SELECT * FROM machines")
@@ -453,8 +465,8 @@ def editMachine(machineID):
     cur.close()
     Editform.MachineName.data = editMachine[0][1]
     Editform.MachineMacAddress.data = editMachine[0][0]
-    Editform.academicAmount.data = editMachine[0][2]
-    Editform.industrialAmount.data = editMachine[0][3]
+    Editform.academicAmount.data = float(editMachine[0][2])
+    Editform.industrialAmount.data = float(editMachine[0][3])
     if request.method == "POST":
         print("Hello from the endi tmaching posting " + request.form.get("industrialAmount"))
         cur = mysql.connection.cursor()
@@ -464,6 +476,11 @@ def editMachine(machineID):
         return redirect("/addMachine.html")
     return render_template("/addMachine.html", machines=machines, form=Editform)
 
+
+@app.route("/editASession/string:<sessionID>", methods=['GET', 'POST'])
+def editASession(sessionID):
+    message = sessionID
+    return render_template("/editASession.html", message=message)
 
 
 
@@ -492,21 +509,93 @@ def editUserFunction(userID = None):
     users = cur.execute("SELECT userID, username FROM users ORDER BY username")
     users = cur.fetchall()
     form.userName.choices = users
-    if request.method == "POST":
-        info = request.form['userName']
-        hello = "yo what up"
-        return render_template("/editUser.html", form=form, data=info,hello=hello)
-    if userID:
-        info = userID
-        hello = "yo what up"
-        return render_template("/editUser.html", form=form, data=info,hello=hello)
+    if form.submit.data == True:
+        return redirect("/selectedEditUser/" + form.userName.data)
     return render_template("/editUser.html", form=form)
+
+
+@app.route('/selectedEditUser/<userID>', methods=['GET', 'POST',  'PUT'])
+def selectedEditUserFunction(userID):
+    cur = mysql.connection.cursor()
+    Editform = makeNewUser()
+    if request.method == "POST":
+        permissionString = ""
+        if(Editform.perMac1.data == True):
+            permissionString += "1"
+        else:
+            permissionString += "0"
+
+        if(Editform.perMac2.data == True):
+            permissionString += "1"
+        else:
+            permissionString += "0"
+
+        if(Editform.perMac3.data == True):
+            permissionString += "1"
+        else:
+            permissionString += "0"
+
+        if(Editform.perMac4.data == True):
+            permissionString += "1"
+        else:
+            permissionString += "0"
+
+        if(Editform.perMac5.data == True):
+            permissionString += "1"
+        else:
+            permissionString += "0"
+
+        if(Editform.perMac6.data == True):
+            permissionString += "1"
+        else:
+            permissionString += "0"
+
+        if(Editform.perMac7.data == True):
+            permissionString += "1"
+        else:
+            permissionString += "0"
+        select_stmt = "UPDATE users SET username = %(username)s, userPin = %(userPin)s, supervisor = %(supervisor)s, department = %(department)s, faculty = %(faculty)s, institution = %(institution)s, rateType = %(rateType)s, Permissions = %(Permissions)s WHERE userID= %(userID)s;"
+        cur.execute(select_stmt, {'username': Editform.userName.data, 'userPin': Editform.userPin.data, 'supervisor':Editform.supervisor.data, 'department': Editform.department.data, 'faculty': Editform.faculty.data, 'institution': Editform.institution.data, 'rateType': Editform.rateType.data, 'Permissions': permissionString,  'userID': str(userID)})
+        mysql.connection.commit()
+        return redirect("/addUser.html")
+    select_stmt = "SELECT * FROM users WHERE userID = %(userID)s"
+    editThisUser = cur.execute(select_stmt, {'userID': userID})
+    editThisUser = cur.fetchall()
+    supers = cur.execute("SELECT superName, superName FROM supervisors")
+    supers = cur.fetchall()
+    dept = cur.execute("SELECT deptName, deptName FROM departments")
+    dept = cur.fetchall()
+    faculty = cur.execute("SELECT facultyName, facultyName FROM faculty")
+    faculty = cur.fetchall()
+    institution = cur.execute(
+        "SELECT institutionName, institutionName FROM institution")
+    institution = cur.fetchall()
+    rate = cur.execute("SELECT rateAmount, rateName FROM rateType")
+    rate = cur.fetchall()
+    Editform.userName.data = editThisUser[0][1]
+    Editform.userPin.data = editThisUser[0][2]
+    Editform.supervisor.choices = supers
+    Editform.department.choices = dept
+    Editform.faculty.choices = faculty
+    Editform.institution.choices = institution
+    Editform.rateType.choices = rate
+    print(editThisUser[0][8][2:3])
+    Editform.perMac1.data = int(editThisUser[0][8][0:1])
+    Editform.perMac2.data = int(editThisUser[0][8][1:2])
+    Editform.perMac3.data = int(editThisUser[0][8][2:3])
+    Editform.perMac4.data = int(editThisUser[0][8][3:4])
+    Editform.perMac5.data = int(editThisUser[0][8][4:5])
+    Editform.perMac6.data = int(editThisUser[0][8][5:6])
+    Editform.perMac7.data = int(editThisUser[0][8][6:7])
+    return render_template("/selectedEditUser.html", form=Editform)
+
+
 
 
 @app.route('/reportUsage.html', methods=['GET', 'POST',  'PUT'])
 def reportUsageFunction():
     cur = mysql.connection.cursor()
-    sessions = cur.execute("SELECT * FROM sessions")
+    sessions = cur.execute("SELECT * FROM sessions ORDER BY sessionStart")
     sessions = cur.fetchall()
     return render_template("/reportUsage.html", sessions=sessions)
 
@@ -705,6 +794,15 @@ def writeUsageRecord(machine, time, userID):
         mysql.connection.commit()
         cur.close()
         cur = mysql.connection.cursor()
+
+        select_stmt = "SELECT * FROM users WHERE userID = %(userID)s"
+        connectedNum = cur.execute(select_stmt, {'userID':userID })
+        connectedNum = cur.fetchall()
+
+        if len(connectedNum) == 0:
+            select_stmt = "INSERT INTO openCardNumber(cardNumber, timeUsed) VALUES (%s,%s)"
+            connectedNum = cur.execute(select_stmt, {'cardNumber':userID, 'timeUsed' : time })
+
         select_stmt = "SELECT * FROM entries WHERE machine = %(machine)s and userID = %(userID)s and enteredSession=\'0\'"
         entries = cur.execute(select_stmt, {'machine': machine,'userID':userID })
         entries = cur.fetchall()

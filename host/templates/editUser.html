@@ -2,16 +2,6 @@
 
 {% block content %}
 <div class="container content-section">
-
-  <h2>INFO</h2>
-  {% if data %}
-
-  <h2>{{data}}</h2>
-
-{% else %}
-
-
-    {% endif %}
   <div class="col">
     <form method="POST" action="">
       {{ form.csrf_token }}
@@ -32,9 +22,7 @@
       </div>
 
     </form>
-
   </div>
-
 
 </div>
 {% endblock %}
