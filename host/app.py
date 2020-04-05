@@ -1,7 +1,8 @@
-from flask import Flask, render_template, url_for, flash, redirect, request
+from flask import Flask, render_template, url_for, flash, redirect, request, send_file
 from flask_wtf import FlaskForm
 from forms import *
 from flask_mysqldb import MySQL
+from openpyxl import Workbook
 import yaml
 import json
 import os
@@ -692,19 +693,201 @@ def uploadUsers():
 
 
 # All report downloads to database files
-@app.route("/downloadSuper", methods=["POST"])
+@app.route("/downloadSupervisors")
 def downloadSuper():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM supervisors')
     wb = Workbook()
     ws = wb.active
+    cur = mysql.connection.cursor()
+    queryOneLength = cur.execute("DESC supervisors;")
+    query = cur.fetchall()
+    labels = []
+    for i in range(0, queryOneLength):
+        labels.append(query[i][0])
+    ws.append(labels)
 
+    queryTwoLength = cur.execute("SELECT * FROM supervisors;")
+    query = cur.fetchall()
+    for i in range(0, queryTwoLength):
+        values = []
+        for j in range(0, queryOneLength):
+            values.append(query[i][j])
+        ws.append(values)
 
-    pandaDataFrame = pandas.DataFrame(cur.fetchall())
-    pandaDataFrame.to_excel('instance/download.Supervisors_file.xlsx')
     mysql.connection.commit()
     cur.close()
-    return redirect("/reports.html")
+    wb.save('static/Supervisors.xlsx')
+    try:
+        return send_file('static/Supervisors.xlsx', attachment_filename='Supervisors.xlsx')
+    except Exception as e:
+        return str(e)
+
+@app.route("/downloadDepartments")
+def downloadDepartments():
+    wb = Workbook()
+    ws = wb.active
+    cur = mysql.connection.cursor()
+    queryOneLength = cur.execute("DESC departments;")
+    query = cur.fetchall()
+    labels = []
+    for i in range(0, queryOneLength):
+        labels.append(query[i][0])
+    ws.append(labels)
+
+    queryTwoLength = cur.execute("SELECT * FROM departments;")
+    query = cur.fetchall()
+    for i in range(0, queryTwoLength):
+        values = []
+        for j in range(0, queryOneLength):
+            values.append(query[i][j])
+        ws.append(values)
+
+    mysql.connection.commit()
+    cur.close()
+    wb.save('static/Departments.xlsx')
+    try:
+        return send_file('static/Departments.xlsx', attachment_filename='Departments.xlsx')
+    except Exception as e:
+        return str(e)
+
+@app.route("/downloadFaculty")
+def downloadFaculty():
+    wb = Workbook()
+    ws = wb.active
+    cur = mysql.connection.cursor()
+    queryOneLength = cur.execute("DESC faculty;")
+    query = cur.fetchall()
+    labels = []
+    for i in range(0, queryOneLength):
+        labels.append(query[i][0])
+    ws.append(labels)
+
+    queryTwoLength = cur.execute("SELECT * FROM faculty;")
+    query = cur.fetchall()
+    for i in range(0, queryTwoLength):
+        values = []
+        for j in range(0, queryOneLength):
+            values.append(query[i][j])
+        ws.append(values)
+
+    mysql.connection.commit()
+    cur.close()
+    wb.save('static/Faculty.xlsx')
+    try:
+        return send_file('static/Faculty.xlsx', attachment_filename='Faculty.xlsx')
+    except Exception as e:
+        return str(e)
+
+@app.route("/downloadInstitution")
+def downloadInstitution():
+    wb = Workbook()
+    ws = wb.active
+    cur = mysql.connection.cursor()
+    queryOneLength = cur.execute("DESC institution;")
+    query = cur.fetchall()
+    labels = []
+    for i in range(0, queryOneLength):
+        labels.append(query[i][0])
+    ws.append(labels)
+
+    queryTwoLength = cur.execute("SELECT * FROM institution;")
+    query = cur.fetchall()
+    for i in range(0, queryTwoLength):
+        values = []
+        for j in range(0, queryOneLength):
+            values.append(query[i][j])
+        ws.append(values)
+
+    mysql.connection.commit()
+    cur.close()
+    wb.save('static/Institution.xlsx')
+    try:
+        return send_file('static/Institution.xlsx', attachment_filename='Institution.xlsx')
+    except Exception as e:
+        return str(e)
+
+@app.route("/downloadRateType")
+def downloadRateType():
+    wb = Workbook()
+    ws = wb.active
+    cur = mysql.connection.cursor()
+    queryOneLength = cur.execute("DESC rateType;")
+    query = cur.fetchall()
+    labels = []
+    for i in range(0, queryOneLength):
+        labels.append(query[i][0])
+    ws.append(labels)
+
+    queryTwoLength = cur.execute("SELECT * FROM rateType;")
+    query = cur.fetchall()
+    for i in range(0, queryTwoLength):
+        values = []
+        for j in range(0, queryOneLength):
+            values.append(query[i][j])
+        ws.append(values)
+
+    mysql.connection.commit()
+    cur.close()
+    wb.save('static/Rate Type.xlsx')
+    try:
+        return send_file('static/Rate Type.xlsx', attachment_filename='Rate Type.xlsx')
+    except Exception as e:
+        return str(e)
+
+@app.route("/downloadUsers")
+def downloadUsers():
+    wb = Workbook()
+    ws = wb.active
+    cur = mysql.connection.cursor()
+    queryOneLength = cur.execute("DESC users;")
+    query = cur.fetchall()
+    labels = []
+    for i in range(0, queryOneLength):
+        labels.append(query[i][0])
+    ws.append(labels)
+
+    queryTwoLength = cur.execute("SELECT * FROM users;")
+    query = cur.fetchall()
+    for i in range(0, queryTwoLength):
+        values = []
+        for j in range(0, queryOneLength):
+            values.append(query[i][j])
+        ws.append(values)
+
+    mysql.connection.commit()
+    cur.close()
+    wb.save('static/Users.xlsx')
+    try:
+        return send_file('static/Users.xlsx', attachment_filename='Users.xlsx')
+    except Exception as e:
+        return str(e)
+
+@app.route("/downloadUsage")
+def downloadUsage():
+    wb = Workbook()
+    ws = wb.active
+    cur = mysql.connection.cursor()
+    queryOneLength = cur.execute("DESC sessions;")
+    query = cur.fetchall()
+    labels = []
+    for i in range(0, queryOneLength):
+        labels.append(query[i][0])
+    ws.append(labels)
+
+    queryTwoLength = cur.execute("SELECT * FROM sessions;")
+    query = cur.fetchall()
+    for i in range(0, queryTwoLength):
+        values = []
+        for j in range(0, queryOneLength):
+            values.append(query[i][j])
+        ws.append(values)
+
+    mysql.connection.commit()
+    cur.close()
+    wb.save('static/Usage.xlsx')
+    try:
+        return send_file('static/Usage.xlsx', attachment_filename='Usage.xlsx')
+    except Exception as e:
+        return str(e)
 
 
 # All functions to delete things such as users, supers, institutions
