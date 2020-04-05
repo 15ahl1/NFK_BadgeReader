@@ -1,39 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container content-section">
 
-<div class="col">
-<form>
-<div class="form-group">
-<label for="exampleInputEmail1">Enter User Name</label>
-<input type="userName" class="form-control" id="userName" placeholder="John Doe">
+  <h2>INFO</h2>
+  {% if data %}
+
+  <h2>{{data}}</h2>
+
+{% else %}
+
+
+    {% endif %}
+  <div class="col">
+    <form method="POST" action="">
+      {{ form.csrf_token }}
+      {{ form.userName.label(class="form-control-label") }}
+      {% if form.userName.errors %}
+      {{ form.userName(class="form-control form-control-lg is-invalid") }}
+      <div class="invalid-feedback">
+        {% for error in form.userName.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% else %}
+      {{ form.userName(class="form-control form-control-lg") }}
+      {% endif %}
+      <br>
+      <div class="form-group">
+        {{ form.submit(class="btn btn-outline-primary") }}
+      </div>
+
+    </form>
+
+  </div>
+
+
 </div>
-
-<p>Select User</p>
-<select class="custom-select" id="validationCustom04" required>
-<option selected disabled value="">Select user</option>
-<option avlue="m1">Michael Reinhart</option>
-</select>
-<br><br>
-<h5>Would you like to edit or delete this user</h5>
-<div class="form-check">
-<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-<label class="form-check-label" for="exampleRadios1">
-Edit User
-</label>
-</div>
-<div class="form-check">
-<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-<label class="form-check-label" for="exampleRadios2">
-Delete User
-</label>
-</div>
-
-
-
-<br>
-<br>
-<button type="submit" class="btn btn-primary">Submit</button>
-
-</form>
-</div>
+{% endblock %}
