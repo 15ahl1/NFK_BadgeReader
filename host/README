@@ -1,23 +1,12 @@
 TO START THIS APPLICATION
 
-
-Database:
-open terminal
-mysql.server start
-mysql -uroot
-
-***FIRST TIME *****
-create database flaskapp;
-use flaskapp;
-source flaskapp.sql;
-**********************
-
-
-password: "" (just hit enter)
-USE flaskapp;
---leave this termal be as it is running the Database
-
-
-open terminal
-export FLASK_ENV=development
-python -m flask run
+1. Open a terminal
+2. Navigate to the host directory
+3. Run the command: sudo ./start.sh  (You may be prompted to enter password or type Y and press Enter)
+4. After completion, enter the following commands:
+5. mysql> create database flaskapp; (First Time)
+6. mysql> use flaskapp;
+7. mysql> source flaskapp.sql; (First Time)
+8. mysql> exit
+9. sudo python3 -m flask run
+10. Open a web browser and navigate to: http://127.0.0.1:5000/
