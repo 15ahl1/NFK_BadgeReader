@@ -1117,15 +1117,15 @@ def writeUsageRecord(machine, time, userID):
         connectedNum = cur.fetchall()
 
         if len(connectedNum) == 0:
-            select_stmt = "INSERT INTO openCardNumber(cardNumber, timeUsed) VALUES (%s,%s)"
-            connectedNum = cur.execute(select_stmt, {'cardNumber':userID, 'timeUsed' : time })
+            cur.execute("INSERT INTO openCardNumber(cardNumber, timeUsed) VALUES (%s,%s);", (str(userID), str(time)))
+            mysql.connection.commit()
 
         select_stmt = "SELECT * FROM entries WHERE machine = %(machine)s and userID = %(userID)s and enteredSession=\'0\'"
         entries = cur.execute(select_stmt, {'machine': machine,'userID':userID })
         entries = cur.fetchall()
 
-        machineName = cur.execute("SELECT * FROM machines WHERE machhine=" + str(machine))
-        machineName = machineName[0][1]
+        machineName = cur.execute("SELECT * FROM machines WHERE machine=\'" + str(machine) + "\'")
+        machineName = cur.fetchall()
 
         if machineName == "Oxford Lasers Micromachining Laser":
             allowed = cur.execute("Select * from machine1 where userID=" + str(userID))
