@@ -3,44 +3,7 @@
 {% block content %}
 
 <div class="container content-section">
-
-  {% if message %}
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-<h4>Here are the available card numbers that have been scanned:</h4>
-
-
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Card Number</th>
-      <th scope="col">Date and time of card usage</th>
-    </tr>
-  </thead>
-  <tbody>
-
-{% for mess in message%}
-    <tr>
-      <td>{{mess[0]}}</td>
-      <td>{{mess[1]}}</td>
-
-    </tr>
-      {% endfor %}
-  </tbody>
-</table>
-
-
-
-
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  {% endif %}
   <div class="row">
-
-
-
-
     <div class="col">
       <form method="POST" action="">
         {{ form.hidden_tag() }}
@@ -143,29 +106,10 @@
           {% endif %}
         </div>
 
-<style media="screen">
-  .form-group input[type="checkbox"] {
-    display: none;
-}
 
-.form-group input[type="checkbox"] + .btn-group > label span {
-    width: 20px;
-}
 
-.form-group input[type="checkbox"] + .btn-group > label span:first-child {
-    display: none;
-}
-.form-group input[type="checkbox"] + .btn-group > label span:last-child {
-    display: inline-block;
-}
 
-.form-group input[type="checkbox"]:checked + .btn-group > label span:first-child {
-    display: inline-block;
-}
-.form-group input[type="checkbox"]:checked + .btn-group > label span:last-child {
-    display: none;
-}
-</style>
+
 
         <h5>Permissions</h5>
         <fieldset class="form-check">
@@ -205,35 +149,11 @@
 
         <div class="form-group">
           {{ form.submit(class="btn btn-outline-primary") }}
-                <a href="/home.html" <button type="button" class="btn btn-outline-danger">Cancle</button></a>
+          <a href="/home.html" <button type="button" class="btn btn-outline-danger">Cancle</button></a>
         </div>
       </form>
 
     </div>
-
-    <div class="col">
-      <div class="container content-section">
-        <table class="table">
-          <thead>List of all current users:</thead>
-          {% for users in userDetails %}
-          <tr>
-            <td>
-              <h4>{{users[1]}}</h4>
-            </td>
-            <td><a href="/selectedEditUser/{{users[0]}}" <button type="button" class="btn btn-warning">Edit</button></td>
-            <td><a href="/deleteUser/{{users[0]}}" <button type="button" class="btn btn-danger">Delete</button></td>
-
-
-          </tr>
-          {% endfor %}
-        </table>
-      </div>
     </div>
-  </div>
-  </div>
 
-
-
-
-
-  {% endblock %}
+    {% endblock %}

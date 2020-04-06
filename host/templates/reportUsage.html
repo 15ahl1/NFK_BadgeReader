@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container content-section">
+
+  {% if FinishedEdit %}
+
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+    <p>{{FinishedEdit}}</p>
+
+
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  {% endif %}
+
+  <table class="table">
+  <br><br>
+  <thead>
+  <tr>
+   <th scope="col">Machine Name</th>
+   <th scope="col">Time Used For</th>
+   <th scope="col">Rate Name</th>
+   <th scope="col">Rate Amount</th>
+   <th scope="col">Bill Amount</th>
+   <th scope="col">User Name</th>
+  </tr>
+  </thead>
+    {% for sessions in sessions %}
+    <tr>
+      <td> {{sessions[2]}} </td>
+      <td> {{sessions[5]}} Hours</td>
+      <td> {{sessions[7]}} </td>
+      <td> {{sessions[6]}} </td>
+      <td> ${{sessions[8]}} </td>
+      <td> {{sessions[10]}} </td>
+      <td><a href="/editASession/{{sessions[0]}}" <button type="button" class="float-right btn btn-warning">Edit</button></td>
+        <td><a href="/deleteASession/{{sessions[0]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
+    </tr>
+    {% endfor %}
+  </table>
+
+
+{{entries}}
+
+</div>
+
+
+{% endblock %}

@@ -15,9 +15,12 @@ class Producer:
     #Call this function with the record as the argument everytime you want to send a message
     def sendRecord(self, message):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((self.ipAddress, self.port))
-        s.sendall(message.encode('utf-8'))
-        #print("Sending: " + message)
+        try:
+            s.connect((self.ipAddress, self.port))
+            s.sendall(message.encode('utf-8'))
+            #print("Sending: " + message)
+        except:
+            print("Something went wrong trying to connect to server.")
         s.close()
 
 

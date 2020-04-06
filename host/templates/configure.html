@@ -5,9 +5,7 @@
 
 <div class="container content-section">
   <table class="table">
-    <thead>
-      <h3>Supervisors</h3>
-    </thead>
+    <thead><h3>Supervisors</h3></thead>
     <button type="button" class="float-right btn btn-success" data-toggle="modal" data-target="#SuperModel">
       Add to table
     </button>
@@ -35,7 +33,7 @@
         <form method="POST" action="">
           <div class="form-group">
             {{ superForm.superName.label(class="form-control-label") }}
-            {{ superForm.superName(class="form-control form-control-lg is-invalid") }}
+            {{ superForm.superName(class="form-control form-control-lg ") }}
             <br>
             {{ superForm.submit(class="btn btn-outline-primary") }}
           </div>
@@ -79,7 +77,7 @@
         <form method="POST" action="">
           <div class="form-group">
             {{ deptForm.deptName.label(class="form-control-label") }}
-            {{ deptForm.deptName(class="form-control form-control-lg is-invalid") }}
+            {{ deptForm.deptName(class="form-control form-control-lg ") }}
             <br>
             {{ deptForm.submit(class="btn btn-outline-primary") }}
           </div>
@@ -124,7 +122,7 @@
         <form method="POST" action="">
           <div class="form-group">
             {{ facultyForm.facultyName.label(class="form-control-label") }}
-            {{ facultyForm.facultyName(class="form-control form-control-lg is-invalid") }}
+            {{ facultyForm.facultyName(class="form-control form-control-lg ") }}
             <br>
             {{ facultyForm.submit(class="btn btn-outline-primary") }}
           </div>
@@ -168,7 +166,7 @@
         <form method="POST" action="">
           <div class="form-group">
             {{ institutionForm.institutionName.label(class="form-control-label") }}
-            {{ institutionForm.institutionName(class="form-control form-control-lg is-invalid") }}
+            {{ institutionForm.institutionName(class="form-control form-control-lg") }}
             <br>
             {{ institutionForm.submit(class="btn btn-outline-primary") }}
           </div>
@@ -214,9 +212,9 @@
         <form method="POST" action="">
           <div class="form-group">
             {{ rateForm.rateTypeName.label(class="form-control-label") }}
-            {{ rateForm.rateTypeName(class="form-control form-control-lg is-invalid") }}
+            {{ rateForm.rateTypeName(class="form-control form-control-lg ") }}
             {{ rateForm.rateAmount.label(class="form-control-label") }}
-            {{ rateForm.rateAmount(class="form-control form-control-lg is-invalid") }}
+            {{ rateForm.rateAmount(class="form-control form-control-lg ") }}
             <br>
             {{ rateForm.submit(class="btn btn-outline-primary") }}
           </div>

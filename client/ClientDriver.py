@@ -1,7 +1,8 @@
 # Driver Program to run on Raspberry Pi Bootup
-# Written by Alastair Lewis
+# Written by Alastair Lewis & JD
 
-
+import os
+import configparser
 from Producer import *
 from RecordMaker import *
 from Wiegand import *
@@ -9,9 +10,11 @@ import pigpio
 
 class ClientDriver():
     def __init__(self):
+        self.config = configparser.ConfigParser()
+        self.config.read('../config.ini')
         # NEED TO BE SET TO HOST IP AND PORT
-        self.HOSTIP = "192.168.2.14"
-        self.HOSTPORT = 6969
+        self.HOSTIP = self.config["Server"]["IP"]
+        self.HOSTPORT = int(self.config["Server"]["Port"])
 
         # Creating RecordMaker and Producer Objects
         self.r = RecordMaker()
@@ -26,6 +29,10 @@ class ClientDriver():
 
 
 if __name__ == "__main__":
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+
     # Remove later --- left in here to show whats needed
     print("run")
     pi = pigpio.pi()
@@ -39,9 +46,13 @@ if __name__ == "__main__":
 
     clientDriver = ClientDriver()
 
-    w = Wiegand(pi, 17, 18, callback)
+    data0 = int(clientDriver.config["Pi"]["Data0"])
+    data1 = int(clientDriver.config["Pi"]["Data1"])
 
-    time.sleep(300)
+    w = Wiegand(pi, data0, data1, callback)
+
+    while True:
+        pass
 
     w.cancel()
 
