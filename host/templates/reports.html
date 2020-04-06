@@ -20,24 +20,40 @@
           </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-outline-info">
-        Upload new Supervisors
-      </button>
-      <button type="submit" class="btn btn-outline-secondary">
-        Download Supervisors file
-      </button>
+
+      <div class="container">
+        <br>
+        <button type="submit" class="btn btn-outline-info">
+          Upload new Supervisors
+        </button>
+      </div>
     </form>
+
+    <div class="container" style="margin-top:10px;">
+      <a href="/downloadSupervisors" download="Supervisors">
+        <button type="submit" class="btn btn-outline-secondary">
+          Download Supervisors file
+        </button>
+      </a>
+    </div>
   </div>
-  <br>
+  {% if message == "supervisorSuccess" %}
+  <p class="card-text" style="color:green">Uploaded the supervisor file succesfully</p>
+  {% elif message == "supervisorFailure" %}
+  <p class="card-text" style="color:red">Error with supervisor file upload</p>
+  {% endif %}
+</div>
 
-  <script type="text/javascript">
-    $('.custom-file-input').on('change', function() {
-      let fileName = $(this).val().split('\\').pop();
-      $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    });
-  </script>
+<br>
 
+<script type="text/javascript">
+  $('.custom-file-input').on('change', function() {
+    let fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+  });
+</script>
 
+<div class="container">
   <div class="row">
     <h2>Departments: </h2>
   </div>
@@ -54,12 +70,14 @@
           </div>
         </div>
       </div>
+      <div class="container">
+        <br>
+        <button type="submit" class="btn btn-outline-info">
+          Upload new Departments
+        </button>
+      </div>
     </form>
-    <div class="container">
-      <br>
-      <button type="submit" class="btn btn-outline-info">
-        Upload new Departments
-      </button>
+    <div class="container" style="margin-top:10px;">
       <a href="/downloadDepartments" download="Departments">
         <button type="submit" class="btn btn-outline-secondary">
           Download Departments file
@@ -67,19 +85,25 @@
       </a>
     </div>
   </div>
-  <br>
+  {% if message == "departmentsSuccess" %}
+  <p class="card-text" style="color:green">Uploaded the departments file succesfully</p>
+  {% elif message == "departmentsFailure" %}
+  <p class="card-text" style="color:red">Error with departments file upload</p>
+  {% endif %}
+</div>
+<br>
 
-  <script type="text/javascript">
-    $('.custom-file-input').on('change', function() {
-      let fileName = $(this).val().split('\\').pop();
-      $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    });
-  </script>
+<script type="text/javascript">
+  $('.custom-file-input').on('change', function() {
+    let fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+  });
+</script>
 
 
 
 
-
+<div class="container">
   <div class="row">
     <h2>Faculty: </h2>
   </div>
@@ -97,12 +121,14 @@
           </div>
         </div>
       </div>
+      <div class="container">
+        <br>
+        <button type="submit" class="btn btn-outline-info">
+          Upload new Faculty
+        </button>
+      </div>
     </form>
-    <div class="container">
-      <br>
-      <button type="submit" class="btn btn-outline-info">
-        Upload new Faculty
-      </button>
+    <div class="container" style="margin-top:10px;">
       <a href="/downloadFaculty" download="Faculty">
         <button type="submit" class="btn btn-outline-secondary">
           Download Faculty file
@@ -110,16 +136,22 @@
       </a>
     </div>
   </div>
-  <br>
+  {% if message == "facultySuccess" %}
+  <p class="card-text" style="color:green">Uploaded the faculty file succesfully</p>
+  {% elif message == "facultyFailure" %}
+  <p class="card-text" style="color:red">Error with faculty file upload</p>
+  {% endif %}
+</div>
+<br>
 
-  <script type="text/javascript">
-    $('.custom-file-input').on('change', function() {
-      let fileName = $(this).val().split('\\').pop();
-      $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    });
-  </script>
+<script type="text/javascript">
+  $('.custom-file-input').on('change', function() {
+    let fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+  });
+</script>
 
-
+<div class="container">
   <div class="row">
     <h2>Institution: </h2>
   </div>
@@ -137,12 +169,14 @@
           </div>
         </div>
       </div>
+      <div class="container">
+        <br>
+        <button type="submit" class="btn btn-outline-info">
+          Upload new Institution
+        </button>
+      </div>
     </form>
-    <div class="container">
-      <br>
-      <button type="submit" class="btn btn-outline-info">
-        Upload new Institution
-      </button>
+    <div class="container" style="margin-top:10px;">
       <a href="/downloadInstitution" download="Institution">
         <button type="submit" class="btn btn-outline-secondary">
           Download Institution file
@@ -150,15 +184,22 @@
       </a>
     </div>
   </div>
-  <br>
+  {% if message == "institutionSuccess" %}
+  <p class="card-text" style="color:green">Uploaded the institution file succesfully</p>
+  {% elif message == "institutionFailure" %}
+  <p class="card-text" style="color:red">Error with institution file upload</p>
+  {% endif %}
+</div>
+<br>
 
-  <script type="text/javascript">
-    $('.custom-file-input').on('change', function() {
-      let fileName = $(this).val().split('\\').pop();
-      $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    });
-  </script>
+<script type="text/javascript">
+  $('.custom-file-input').on('change', function() {
+    let fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+  });
+</script>
 
+<div class="container">
   <div class="row">
     <h2>Rate Type: </h2>
   </div>
@@ -176,12 +217,14 @@
           </div>
         </div>
       </div>
+      <div class="container">
+        <br>
+        <button type="submit" class="btn btn-outline-info">
+          Upload new Rate Type
+        </button>
+      </div>
     </form>
-    <div class="container">
-      <br>
-      <button type="submit" class="btn btn-outline-info">
-        Upload new Rate Type
-      </button>
+    <div class="container" style="margin-top:10px;">
       <a href="/downloadRateType" download="Rate Type">
         <button type="submit" class="btn btn-outline-secondary">
           Download Rate Type file
@@ -189,16 +232,22 @@
       </a>
     </div>
   </div>
-  <br>
+  {% if message == "rateTypeSuccess" %}
+  <p class="card-text" style="color:green">Uploaded the rate type file succesfully</p>
+  {% elif message == "rateTypeFailure" %}
+  <p class="card-text" style="color:red">Error with rate type file upload</p>
+  {% endif %}
+</div>
+<br>
 
-  <script type="text/javascript">
-    $('.custom-file-input').on('change', function() {
-      let fileName = $(this).val().split('\\').pop();
-      $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    });
-  </script>
+<script type="text/javascript">
+  $('.custom-file-input').on('change', function() {
+    let fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+  });
+</script>
 
-
+<div class="container">
   <div class="row">
     <h2>Users: </h2>
   </div>
@@ -216,12 +265,14 @@
           </div>
         </div>
       </div>
+      <div class="container">
+        <br>
+        <button type="submit" class="btn btn-outline-info">
+          Upload new Users
+        </button>
+      </div>
     </form>
-    <div class="container">
-      <br>
-      <button type="submit" class="btn btn-outline-info">
-        Upload new Users
-      </button>
+    <div class="container" style="margin-top:10px;">
       <a href="/downloadUsers" download="Users">
         <button type="submit" class="btn btn-outline-secondary">
           Download Users file
@@ -229,16 +280,22 @@
       </a>
     </div>
   </div>
-  <br>
+  {% if message == "usersSuccess" %}
+  <p class="card-text" style="color:green">Uploaded the users file succesfully</p>
+  {% elif message == "usersFailure" %}
+  <p class="card-text" style="color:red">Error with users file upload</p>
+  {% endif %}
+</div>
+<br>
 
-  <script type="text/javascript">
-    $('.custom-file-input').on('change', function() {
-      let fileName = $(this).val().split('\\').pop();
-      $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    });
-  </script>
+<script type="text/javascript">
+  $('.custom-file-input').on('change', function() {
+    let fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+  });
+</script>
 
-
+<div class="container">
   <div class="row">
     <h2>Usage: </h2>
   </div>
@@ -256,12 +313,14 @@
           </div>
         </div>
       </div>
+      <div class="container">
+        <br>
+        <button type="submit" class="btn btn-outline-info">
+          Upload new Usage
+        </button>
+      </div>
     </form>
-    <div class="container">
-      <br>
-      <button type="submit" class="btn btn-outline-info">
-        Upload new Usage
-      </button>
+    <div class="container" style="margin-top:10px;">
       <a href="/downloadUsage" download="Usage">
         <button type="submit" class="btn btn-outline-secondary">
           Download Usage file
@@ -269,14 +328,20 @@
       </a>
     </div>
   </div>
-  <br>
+  {% if message == "usageSuccess" %}
+  <p class="card-text" style="color:green">Uploaded the usage file succesfully</p>
+  {% elif message == "usageFailure" %}
+  <p class="card-text" style="color:red">Error with usage file upload</p>
+  {% endif %}
+</div>
+<br>
 
-  <script type="text/javascript">
-    $('.custom-file-input').on('change', function() {
-      let fileName = $(this).val().split('\\').pop();
-      $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    });
-  </script>
+<script type="text/javascript">
+  $('.custom-file-input').on('change', function() {
+    let fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+  });
+</script>
 </div>
 
 {% endblock %}
