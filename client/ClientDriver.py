@@ -10,11 +10,11 @@ import pigpio
 
 class ClientDriver():
     def __init__(self):
-        config = configparser.ConfigParser()
-        config.read('../config.ini')
+        self.config = configparser.ConfigParser()
+        self.config.read('../config.ini')
         # NEED TO BE SET TO HOST IP AND PORT
-        self.HOSTIP = config["Server"]["IP"]
-        self.HOSTPORT = int(config["Server"]["Port"])
+        self.HOSTIP = self.config["Server"]["IP"]
+        self.HOSTPORT = int(self.config["Server"]["Port"])
 
         # Creating RecordMaker and Producer Objects
         self.r = RecordMaker()
@@ -46,7 +46,10 @@ if __name__ == "__main__":
 
     clientDriver = ClientDriver()
 
-    w = Wiegand(pi, 17, 18, callback)
+    data0 = clientDriver.config["Pi"]["Data0"]
+    data1 = clientDriver.config["Pi"]["Data1"]
+
+    w = Wiegand(pi, data0, data1, callback)
 
     while True:
         pass

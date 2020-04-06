@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container content-section">
+{% if alerted %}
+
+
+<table class="table">
+  <thead><h3>Alerts</h3></thead>
+  <th>Names:</th>
+  <th>Date:</th>
+{% for aler in alerted %}
+  <tr>
+    <td> {{ aler[5] }} was using the {{aler[2]}} without permissions </td>
+    <td>Used this machine at: {{ aler[3] }}</td>
+    <td><a href="/deleteAlert/{{aler[0]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
+  </tr>
+  {% endfor %}
+</table>
+
+
+{% else %}
+
+
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <p>There are no alerts!!</p>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+</div>
+
+{% endif %}
+
+
+{% endblock %}

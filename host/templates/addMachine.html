@@ -4,9 +4,9 @@
 
 <div class="container content-section">
   <h4>Make a new machine</h4>
-  {%if message%}
+  {% if message %}
   <div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{message}}
+    <p>{{ message }}</p>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -67,8 +67,10 @@
         <div class="form-group">
           <br>
           {{ form.submit(class="btn btn-outline-primary") }}
+            <a href="/home.html" <button type="button" class="btn btn-outline-danger">Cancle</button></a>
         </div>
       </form>
+
     </div>
   </div>
 </div>
@@ -99,6 +101,7 @@
     </tr>
     {% endfor %}
   </table>
+
 </div>
 
 {% endblock %}

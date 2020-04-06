@@ -11,6 +11,16 @@ CREATE TABLE users(
   PRIMARY KEY (userID)
 );
 
+CREATE TABLE alerted(
+  alertID int not null auto_increment PRIMARY KEY,
+  machine varchar(50),
+  machineName varchar(50),
+  timeUsed datetime,
+  userID varchar(50),
+  userName varchar(100)
+);
+
+
 
 CREATE TABLE entries(
   entrieID int not null auto_increment PRIMARY KEY,
@@ -21,37 +31,42 @@ CREATE TABLE entries(
   enteredSession boolean
 );
 
+CREATE TABLE openCardNumber(
+  cardID int not null auto_increment PRIMARY KEY,
+  cardNumber varchar(50),
+  timeUsed datetime
+);
 
 
 CREATE TABLE machines(
   machine varchar(50),
   name varchar(100),
   inUse boolean,
-  academicRate decimal,
-  institutionalRate decimal,
+  academicRate decimal(8,2),
+  institutionalRate decimal(8,2),
   machineID int not null auto_increment PRIMARY KEY
 );
 
 CREATE TABLE machine1 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE machine2 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE machine3 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE machine4 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE machine5 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE machine6 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE machine7 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE supervisors (
   superID int not null auto_increment,
@@ -104,7 +119,7 @@ CREATE TABLE sessions (
 INSERT INTO sessions(machineID,machineName,sessionStart,sessionEnd,timeUsed,rateUsed,rateTypeUsed,billAmount,userID,userName)
 VALUES("98:01:a7:8f:00:99","Oxford Lasers Micromachining Laser","2020-03-29 00:09:40","2020-03-29 00:012:40",3.45,"22","Academic",23.33,"12345", "Michael Reinhart");
 
-INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('98:01:a7:8f:00:99', 'Oxford Lasers Micromachining Laser', '0',66, 99);
+INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('98:01:a7:8f:00:99', 'Oxford Lasers Micromachining Laser', '0',66.99, 99.25);
 INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('b8:27:eb:61:98:05', 'Raith Pioneer Electron-beam', '0', 6, 99);
 INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('00:00:00:00:00:03', 'NxQ 4006 Mask Aligner', '0',6, 99);
 INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('00:00:00:00:00:04', 'IMP SF-100 Xpress Maskless Photolithography System','0', 6, 99);
@@ -124,14 +139,21 @@ INSERT INTO `rateType` (`ratename`, `rateAmount`) VALUES ('Regular Usage', "22")
 INSERT INTO `rateType` (`ratename`, `rateAmount`) VALUES ('Service Project', "33");
 
 
+INSERT INTO openCardNumber(cardNumber, timeUsed) values ('12345676766','2020-03-29 00:09:40');
+INSERT INTO openCardNumber(cardNumber, timeUsed) values ('8585','2020-08-29 00:09:40');
+
+
+INSERT INTO alerted(machine, machinename, timeUsed, userID, userName) VALUES ('98:01:a7:8f:00:99',"Oxford Lasers Micromachining Laser", "2020-03-29 00:09:40", "8585", "Mac Furlong");
+
+
 -- Three Sessions
-INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-03-29 00:09:40","12345",1,1);
-INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-03-29 00:012:40","12345",0,1);
+INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-03-31 00:09:40","12345",1,1);
+INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-03-31 03:12:40","12345",0,1);
 
 
-INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-04-20 00:09:40","12345",1,0);
-INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-04-20 00:012:40","12345",0,0);
+INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-04-05 00:09:40","12345",1,0);
+INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-04-05 05:14:40","12345",0,0);
 
 
-INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('b8:27:eb:61:98:05',"2020-03-29 00:012:40","12345",1,0);
-INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('b8:27:eb:61:98:05',"2020-03-29 00:17:40","12345",0,0);
+INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('b8:27:eb:61:98:05',"2020-04-02 00:012:40","42132",1,0);
+INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('b8:27:eb:61:98:05',"2020-04-02 02:17:40","42132",0,0);

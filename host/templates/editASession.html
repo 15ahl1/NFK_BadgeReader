@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container content-section">
+
+{% if message %}
+
+<h2> {{message}} </h2>
+
+{% else %}
+  <h4>Edit sessions</h4>
+
+  <h2>{{sessionInfo}}</h2>
+
+<div class="col">
+  <form method="POST" action="">
+
+  {{ form.hidden_tag() }}
+
+  <div class="form-group">
+    {{ form.machineName.label(class="form-control-label") }}
+    {% if form.machineName.errors %}
+    {{ form.machineName(class="form-control form-control-lg is-invalid") }}
+    <div class="invalid-feedback">
+      {% for error in form.machineName.errors %}
+      <span>{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% else %}
+    {{ form.machineName(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form.machineMacAddress.label(class="form-control-label") }}
+    {% if form.machineMacAddress.errors %}
+    {{ form.machineMacAddress(class="form-control form-control-lg is-invalid") }}
+    <div class="invalid-feedback">
+      {% for error in form.machineMacAddress.errors %}
+      <span>{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% else %}
+    {{ form.machineMacAddress(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form.sessionStart.label(class="form-control-label") }}
+    {% if form.sessionStart.errors %}
+    {{ form.sessionStart(class="form-control form-control-lg is-invalid") }}
+    <div class="invalid-feedback">
+      {% for error in form.sessionStart.errors %}
+      <span>{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% else %}
+    {{ form.sessionStart(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form.sessionEnd.label(class="form-control-label") }}
+    {% if form.sessionEnd.errors %}
+    {{ form.sessionEnd(class="form-control form-control-lg is-invalid") }}
+    <div class="invalid-feedback">
+      {% for error in form.sessionEnd.errors %}
+      <span>{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% else %}
+    {{ form.sessionEnd(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form.timeUsed.label(class="form-control-label") }}
+    {% if form.timeUsed.errors %}
+    {{ form.timeUsed(class="form-control form-control-lg is-invalid") }}
+    <div class="invalid-feedback">
+      {% for error in form.timeUsed.errors %}
+      <span>{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% else %}
+    {{ form.timeUsed(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+
+
+  <div class="form-group">
+    {{ form.rateUsed.label(class="form-control-label") }}
+    {% if form.rateUsed.errors %}
+    {{ form.rateUsed(class="form-control form-control-lg is-invalid") }}
+    <div class="invalid-feedback">
+      {% for error in form.rateUsed.errors %}
+      <span>{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% else %}
+    {{ form.rateUsed(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form.billAmount.label(class="form-control-label") }}
+    {% if form.billAmount.errors %}
+    {{ form.billAmount(class="form-control form-control-lg is-invalid") }}
+    <div class="invalid-feedback">
+      {% for error in form.billAmount.errors %}
+      <span>{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% else %}
+    {{ form.billAmount(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+
+    <div class="form-group">
+      {{ form.rateTypeUsed.label(class="form-control-label") }}
+      {% if form.rateTypeUsed.errors %}
+      {{ form.rateTypeUsed(class="form-control form-control-lg is-invalid") }}
+      <div class="invalid-feedback">
+        {% for error in form.rateTypeUsed.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% else %}
+      {{ form.rateTypeUsed(class="form-control form-control-lg") }}
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      {{ form.userID.label(class="form-control-label") }}
+      {% if form.userID.errors %}
+      {{ form.userID(class="form-control form-control-lg is-invalid") }}
+      <div class="invalid-feedback">
+        {% for error in form.userID.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% else %}
+      {{ form.userID(class="form-control form-control-lg") }}
+      {% endif %}
+    </div>
+
+      <div class="form-group">
+        {{ form.UserName.label(class="form-control-label") }}
+        {% if form.UserName.errors %}
+        {{ form.UserName(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.UserName.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %}
+        {{ form.UserName(class="form-control form-control-lg") }}
+        {% endif %}
+      </div>
+
+    <div class="form-group">
+      {{ form.submit(class="btn btn-outline-primary") }}
+      <a href="/home.html" <button type="button" class="btn btn-outline-danger">Cancle</button></a>
+    </div>
+  </form>
+
+
+  </div>
+
+  {% endif %}
+  </div>
+
+  {% endblock %}

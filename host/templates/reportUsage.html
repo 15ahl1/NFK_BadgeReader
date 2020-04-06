@@ -5,6 +5,20 @@
 
 <div class="container content-section">
 
+  {% if FinishedEdit %}
+
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+    <p>{{FinishedEdit}}</p>
+
+
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  {% endif %}
+
   <table class="table">
   <br><br>
   <thead>
@@ -25,7 +39,8 @@
       <td> {{sessions[6]}} </td>
       <td> ${{sessions[8]}} </td>
       <td> {{sessions[10]}} </td>
-      <td><a href="/editSession/{{session[0]}}" <button type="button" class="float-right btn btn-warning">Edit</button></td>
+      <td><a href="/editASession/{{sessions[0]}}" <button type="button" class="float-right btn btn-warning">Edit</button></td>
+        <td><a href="/deleteASession/{{sessions[0]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
     </tr>
     {% endfor %}
   </table>
