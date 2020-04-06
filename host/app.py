@@ -99,9 +99,11 @@ def timeHelper(name, date, machine):
         label7 = currentDate.strftime("%A") + " " + str(currentDate.day)
 
         cur = mysql.connection.cursor()
-        userID = cur.execute("SELECT userID FROM users WHERE userName = (%s)", ([name]))
-        length = cur.execute("SELECT timeUsed FROM entries WHERE userID = (%s)", ([userID]))
-        usage = cur.fetchall()
+        length = cur.execute("SELECT userPin FROM users WHERE userName = (%s)", ([name]))
+        if length != 0:
+            userID = cur.fetchone()
+            length = cur.execute("SELECT timeUsed FROM entries WHERE userID = (%s)", ([userID[0]]))
+            usage = cur.fetchall()
         mysql.connection.commit()
         cur.close()
         if length == 0:
@@ -142,7 +144,7 @@ def timeHelper(name, date, machine):
 
         cur = mysql.connection.cursor()
         if len(date) != 10:
-            errorMessage = "No entries this week for that date"
+            errorMessage = "No entries for that date"
         else:
             #01/01/2020 <example>
             dateQuery = date[6:10] + "-" + date[0: 2] + "-" + date[3:5]
@@ -275,7 +277,7 @@ def timeHelper(name, date, machine):
                 elif usage[i][0].date() == sixDays:
                     value1 += sessionTime
 
-    return render_template('time.html', units=units, label1=label1, label2=label2, label3=label3, label4=label4, label5=label5, label6=label6, label7=label7, value1=value1, value2=value2, value3=value3, value4=value4, value5=value5, value6=value6, value7=value7, machines=machines, errorMessage=errorMessage)
+    return render_template('time.html', units=units, label1=label1, label2=label2, label3=label3, label4=label4, label5=label5, label6=label6, label7=label7, value1=round(value1, 2), value2=round(value2, 2), value3=round(value3, 2), value4=round(value4, 2), value5=round(value5, 2), value6=round(value6, 2), value7=round(value7, 2), machines=machines, errorMessage=errorMessage)
 
 @app.route('/addUser.html', methods=['GET', 'POST',  'PUT'])
 def userFunction():
@@ -953,7 +955,7 @@ def downloadUsers():
         for j in range(0, queryOneLength):
             values.append(query[i][j])
         ws.append(values)
-        
+
     mysql.connection.commit()
     cur.close()
     wb.save('static/Users.xlsx')

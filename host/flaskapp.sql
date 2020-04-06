@@ -147,13 +147,13 @@ INSERT INTO alerted(machine, machinename, timeUsed, userID, userName) VALUES ('9
 
 
 -- Three Sessions
-INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-03-29 00:09:40","12345",1,1);
-INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-03-29 00:012:40","12345",0,1);
+INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-03-31 00:09:40","12345",1,1);
+INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-03-31 03:12:40","12345",0,1);
 
 
-INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-04-20 00:09:40","12345",1,0);
-INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-04-20 00:012:40","12345",0,0);
+INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-04-05 00:09:40","12345",1,0);
+INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('98:01:a7:8f:00:99',"2020-04-05 05:14:40","12345",0,0);
 
 
-INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('b8:27:eb:61:98:05',"2020-03-29 00:012:40","12345",1,0);
-INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('b8:27:eb:61:98:05',"2020-03-29 00:17:40","12345",0,0);
+INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('b8:27:eb:61:98:05',"2020-04-02 00:012:40","42132",1,0);
+INSERT INTO entries(machine,timeUsed,userID,inUse,enteredSession) VALUES ('b8:27:eb:61:98:05',"2020-04-02 02:17:40","42132",0,0);
