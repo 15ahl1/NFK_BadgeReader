@@ -1127,55 +1127,57 @@ def writeUsageRecord(machine, time, userID):
         machineName = cur.execute("SELECT * FROM machines WHERE machine=\'" + str(machine) + "\'")
         machineName = cur.fetchall()
 
-        if machineName == "Oxford Lasers Micromachining Laser":
+        allMachineID = cur.execute("SELECT * FROM machines")
+        allMachineID = cur.fetchall()
+
+        if machine == str(allMachineID[0][0]):
             allowed = cur.execute("Select * from machine1 where userID=" + str(userID))
             allowed = cur.fetchall()
             if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,"Oxford Lasers Micromachining Laser", time, userID, connectedNum[0][1])
+                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,machineName, time, userID, connectedNum[0][1])
                 mysql.connection.commit()
 
-        if machineName == "Raith Pioneer Electron-beam":
+        if machine == str(allMachineID[1][0]):
             allowed = cur.execute("Select * from machine2 where userID=" + str(userID))
             allowed = cur.fetchall()
             if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,"Raith Pioneer Electron-beam", time, userID, connectedNum[0][1])
+                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,machineName, time, userID, connectedNum[0][1])
                 mysql.connection.commit()
 
-        if machineName == "NxQ 4006 Mask Aligner":
+        if machine == str(allMachineID[2][0]):
             allowed = cur.execute("Select * from machine3 where userID=" + str(userID))
             allowed = cur.fetchall()
             if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,"NxQ 4006 Mask Aligner", time, userID, connectedNum[0][1])
+                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,machineName, time, userID, connectedNum[0][1])
                 mysql.connection.commit()
 
-        if machineName == "IMP SF-100 Xpress Maskless Photolithography System":
+        if machine == str(allMachineID[3][0]):
             allowed = cur.execute("Select * from machine4 where userID=" + str(userID))
             allowed = cur.fetchall()
             if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,"IMP SF-100 Xpress Maskless Photolithography System", time, userID, connectedNum[0][1])
+                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,machineName, time, userID, connectedNum[0][1])
                 mysql.connection.commit()
 
-        if machineName == "Trion MiniLock III Reactive Ion Etcher":
+        if machine == str(allMachineID[4][0]):
             allowed = cur.execute("Select * from machine5 where userID=" + str(userID))
             allowed = cur.fetchall()
             if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,"Trion MiniLock III Reactive Ion Etcher", time, userID, connectedNum[0][1])
+                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,machineName, time, userID, connectedNum[0][1])
                 mysql.connection.commit()
 
-        if machineName == "PVD 75 Sputtering System":
+        if machine == str(allMachineID[5][0]):
             allowed = cur.execute("Select * from machine6 where userID=" + str(userID))
             allowed = cur.fetchall()
             if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,"PVD 75 Sputtering System", time, userID, connectedNum[0][1])
+                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,machineName, time, userID, connectedNum[0][1])
                 mysql.connection.commit()
 
-        if machineName == "Thermionics electron-beam Evaporator":
+        if machine == str(allMachineID[6][0]):
             allowed = cur.execute("Select * from machine7 where userID=" + str(userID))
             allowed = cur.fetchall()
             if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s,%s,%s,%s);", (machine, "Thermionics electron-beam Evaporator", time, userID, connectedNum[0][1])
+                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s,%s,%s,%s);", (machine,machineName, time, userID, connectedNum[0][1])
                 mysql.connection.commit()
-
 
 
         if len(entries)==2:
