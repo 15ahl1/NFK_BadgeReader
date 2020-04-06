@@ -116,6 +116,14 @@ CREATE TABLE sessions (
   userName varchar(50)
 );
 
+SELECT MIN(id) AS id, title
+FROM tbl_countries
+GROUP BY title
+
+SELECT MAX(timeUsed) AS cardNumber, timeUsed FROM openCardNumber GROUP BY cardNumber;
+
+INSERT INTO rateType (rateName, rateAmount) values ("Academic", "Academic Machine Dependant");
+INSERT INTO rateType (rateName, rateAmount) values ("Institutional", "Institutional Machine Dependant");
 
 INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('98:01:a7:8f:00:99', 'Oxford Lasers Micromachining Laser', '0',66.99, 99.25);
 INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('b8:27:eb:61:98:05', 'Raith Pioneer Electron-beam', '0', 6, 99);
@@ -124,4 +132,3 @@ INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALU
 INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('00:00:00:00:00:05', 'Trion MiniLock III Reactive Ion Etcher', '0', 6, 99);
 INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('00:00:00:00:00:06', 'PVD 75 Sputtering System','0',66, 99);
 INSERT INTO machines(machine, name, inUse, academicRate, institutionalRate) VALUES('00:00:00:00:00:07', 'Thermionics electron-beam Evaporator', '0', 66, 99);
-

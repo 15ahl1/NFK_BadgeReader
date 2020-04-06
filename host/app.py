@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, flash, redirect, request, sen
 from flask_wtf import FlaskForm
 from forms import *
 from flask_mysqldb import MySQL
-from openpyxl import Workbook
+# from openpyxl import Workbook
 import yaml
 import json
 import os
@@ -554,56 +554,99 @@ def selectedEditUserFunction(userID):
     Editform = makeNewUser()
     if request.method == "POST":
         permissionString = ""
+
         if(Editform.perMac1.data == True):
             permissionString += "1"
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO machine1(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
-
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine1 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
 
         if(Editform.perMac2.data == True):
             permissionString += "1"
             cur.execute("INSERT INTO machine2(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine2 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
 
         if(Editform.perMac3.data == True):
             permissionString += "1"
             cur.execute("INSERT INTO machine3(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine3 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
 
         if(Editform.perMac4.data == True):
             permissionString += "1"
             cur.execute("INSERT INTO machine4(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine4 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
+
 
         if(Editform.perMac5.data == True):
             permissionString += "1"
             cur.execute("INSERT INTO machine5(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine5 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
 
         if(Editform.perMac6.data == True):
             permissionString += "1"
             cur.execute("INSERT INTO machine6(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine6 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
 
         if(Editform.perMac7.data == True):
             permissionString += "1"
             cur.execute("INSERT INTO machine7(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine7 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
         select_stmt = "UPDATE users SET username = %(username)s, userPin = %(userPin)s, supervisor = %(supervisor)s, department = %(department)s, faculty = %(faculty)s, institution = %(institution)s, rateType = %(rateType)s, Permissions = %(Permissions)s WHERE userID= %(userID)s;"
         cur.execute(select_stmt, {'username': Editform.userName.data, 'userPin': Editform.userPin.data, 'supervisor':Editform.supervisor.data, 'department': Editform.department.data, 'faculty': Editform.faculty.data, 'institution': Editform.institution.data, 'rateType': Editform.rateType.data, 'Permissions': permissionString,  'userID': str(userID)})
         mysql.connection.commit()
@@ -795,202 +838,202 @@ def uploadUsage():
 
 
 
-# All report downloads to database files
-@app.route("/downloadSupervisors")
-def downloadSuper():
-    wb = Workbook()
-    ws = wb.active
-    cur = mysql.connection.cursor()
-    queryOneLength = cur.execute("DESC supervisors;")
-    query = cur.fetchall()
-    labels = []
-    for i in range(0, queryOneLength):
-        labels.append(query[i][0])
-    ws.append(labels)
-
-    queryTwoLength = cur.execute("SELECT * FROM supervisors;")
-    query = cur.fetchall()
-    for i in range(0, queryTwoLength):
-        values = []
-        for j in range(0, queryOneLength):
-            values.append(query[i][j])
-        ws.append(values)
-
-    mysql.connection.commit()
-    cur.close()
-    wb.save('static/Supervisors.xlsx')
-    try:
-        return send_file('static/Supervisors.xlsx', attachment_filename='Supervisors.xlsx')
-    except Exception as e:
-        return str(e)
-
-@app.route("/downloadDepartments")
-def downloadDepartments():
-    wb = Workbook()
-    ws = wb.active
-    cur = mysql.connection.cursor()
-    queryOneLength = cur.execute("DESC departments;")
-    query = cur.fetchall()
-    labels = []
-    for i in range(0, queryOneLength):
-        labels.append(query[i][0])
-    ws.append(labels)
-
-    queryTwoLength = cur.execute("SELECT * FROM departments;")
-    query = cur.fetchall()
-    for i in range(0, queryTwoLength):
-        values = []
-        for j in range(0, queryOneLength):
-            values.append(query[i][j])
-        ws.append(values)
-
-    mysql.connection.commit()
-    cur.close()
-    wb.save('static/Departments.xlsx')
-    try:
-        return send_file('static/Departments.xlsx', attachment_filename='Departments.xlsx')
-    except Exception as e:
-        return str(e)
-
-@app.route("/downloadFaculty")
-def downloadFaculty():
-    wb = Workbook()
-    ws = wb.active
-    cur = mysql.connection.cursor()
-    queryOneLength = cur.execute("DESC faculty;")
-    query = cur.fetchall()
-    labels = []
-    for i in range(0, queryOneLength):
-        labels.append(query[i][0])
-    ws.append(labels)
-
-    queryTwoLength = cur.execute("SELECT * FROM faculty;")
-    query = cur.fetchall()
-    for i in range(0, queryTwoLength):
-        values = []
-        for j in range(0, queryOneLength):
-            values.append(query[i][j])
-        ws.append(values)
-
-    mysql.connection.commit()
-    cur.close()
-    wb.save('static/Faculty.xlsx')
-    try:
-        return send_file('static/Faculty.xlsx', attachment_filename='Faculty.xlsx')
-    except Exception as e:
-        return str(e)
-
-@app.route("/downloadInstitution")
-def downloadInstitution():
-    wb = Workbook()
-    ws = wb.active
-    cur = mysql.connection.cursor()
-    queryOneLength = cur.execute("DESC institution;")
-    query = cur.fetchall()
-    labels = []
-    for i in range(0, queryOneLength):
-        labels.append(query[i][0])
-    ws.append(labels)
-
-    queryTwoLength = cur.execute("SELECT * FROM institution;")
-    query = cur.fetchall()
-    for i in range(0, queryTwoLength):
-        values = []
-        for j in range(0, queryOneLength):
-            values.append(query[i][j])
-        ws.append(values)
-
-    mysql.connection.commit()
-    cur.close()
-    wb.save('static/Institution.xlsx')
-    try:
-        return send_file('static/Institution.xlsx', attachment_filename='Institution.xlsx')
-    except Exception as e:
-        return str(e)
-
-@app.route("/downloadRateType")
-def downloadRateType():
-    wb = Workbook()
-    ws = wb.active
-    cur = mysql.connection.cursor()
-    queryOneLength = cur.execute("DESC rateType;")
-    query = cur.fetchall()
-    labels = []
-    for i in range(0, queryOneLength):
-        labels.append(query[i][0])
-    ws.append(labels)
-
-    queryTwoLength = cur.execute("SELECT * FROM rateType;")
-    query = cur.fetchall()
-    for i in range(0, queryTwoLength):
-        values = []
-        for j in range(0, queryOneLength):
-            values.append(query[i][j])
-        ws.append(values)
-
-    mysql.connection.commit()
-    cur.close()
-    wb.save('static/Rate Type.xlsx')
-    try:
-        return send_file('static/Rate Type.xlsx', attachment_filename='Rate Type.xlsx')
-    except Exception as e:
-        return str(e)
-
-@app.route("/downloadUsers")
-def downloadUsers():
-    wb = Workbook()
-    ws = wb.active
-    cur = mysql.connection.cursor()
-    queryOneLength = cur.execute("DESC users;")
-    query = cur.fetchall()
-    labels = []
-    for i in range(0, queryOneLength):
-        labels.append(query[i][0])
-    ws.append(labels)
-
-    queryTwoLength = cur.execute("SELECT * FROM users;")
-    query = cur.fetchall()
-    for i in range(0, queryTwoLength):
-        values = []
-        for j in range(0, queryOneLength):
-            values.append(query[i][j])
-        ws.append(values)
-
-    mysql.connection.commit()
-    cur.close()
-    wb.save('static/Users.xlsx')
-    try:
-        return send_file('static/Users.xlsx', attachment_filename='Users.xlsx')
-    except Exception as e:
-        return str(e)
-
-@app.route("/downloadUsage")
-def downloadUsage():
-    wb = Workbook()
-    ws = wb.active
-    cur = mysql.connection.cursor()
-    queryOneLength = cur.execute("DESC sessions;")
-    query = cur.fetchall()
-    labels = []
-    for i in range(0, queryOneLength):
-        labels.append(query[i][0])
-    ws.append(labels)
-
-    queryTwoLength = cur.execute("SELECT * FROM sessions;")
-    query = cur.fetchall()
-    for i in range(0, queryTwoLength):
-        values = []
-        for j in range(0, queryOneLength):
-            values.append(query[i][j])
-        ws.append(values)
-
-    mysql.connection.commit()
-    cur.close()
-    wb.save('static/Usage.xlsx')
-    try:
-        return send_file('static/Usage.xlsx', attachment_filename='Usage.xlsx')
-    except Exception as e:
-        return str(e)
+# # All report downloads to database files
+# @app.route("/downloadSupervisors")
+# def downloadSuper():
+#     wb = Workbook()
+#     ws = wb.active
+#     cur = mysql.connection.cursor()
+#     queryOneLength = cur.execute("DESC supervisors;")
+#     query = cur.fetchall()
+#     labels = []
+#     for i in range(0, queryOneLength):
+#         labels.append(query[i][0])
+#     ws.append(labels)
+#
+#     queryTwoLength = cur.execute("SELECT * FROM supervisors;")
+#     query = cur.fetchall()
+#     for i in range(0, queryTwoLength):
+#         values = []
+#         for j in range(0, queryOneLength):
+#             values.append(query[i][j])
+#         ws.append(values)
+#
+#     mysql.connection.commit()
+#     cur.close()
+#     wb.save('static/Supervisors.xlsx')
+#     try:
+#         return send_file('static/Supervisors.xlsx', attachment_filename='Supervisors.xlsx')
+#     except Exception as e:
+#         return str(e)
+#
+# @app.route("/downloadDepartments")
+# def downloadDepartments():
+#     wb = Workbook()
+#     ws = wb.active
+#     cur = mysql.connection.cursor()
+#     queryOneLength = cur.execute("DESC departments;")
+#     query = cur.fetchall()
+#     labels = []
+#     for i in range(0, queryOneLength):
+#         labels.append(query[i][0])
+#     ws.append(labels)
+#
+#     queryTwoLength = cur.execute("SELECT * FROM departments;")
+#     query = cur.fetchall()
+#     for i in range(0, queryTwoLength):
+#         values = []
+#         for j in range(0, queryOneLength):
+#             values.append(query[i][j])
+#         ws.append(values)
+#
+#     mysql.connection.commit()
+#     cur.close()
+#     wb.save('static/Departments.xlsx')
+#     try:
+#         return send_file('static/Departments.xlsx', attachment_filename='Departments.xlsx')
+#     except Exception as e:
+#         return str(e)
+#
+# @app.route("/downloadFaculty")
+# def downloadFaculty():
+#     wb = Workbook()
+#     ws = wb.active
+#     cur = mysql.connection.cursor()
+#     queryOneLength = cur.execute("DESC faculty;")
+#     query = cur.fetchall()
+#     labels = []
+#     for i in range(0, queryOneLength):
+#         labels.append(query[i][0])
+#     ws.append(labels)
+#
+#     queryTwoLength = cur.execute("SELECT * FROM faculty;")
+#     query = cur.fetchall()
+#     for i in range(0, queryTwoLength):
+#         values = []
+#         for j in range(0, queryOneLength):
+#             values.append(query[i][j])
+#         ws.append(values)
+#
+#     mysql.connection.commit()
+#     cur.close()
+#     wb.save('static/Faculty.xlsx')
+#     try:
+#         return send_file('static/Faculty.xlsx', attachment_filename='Faculty.xlsx')
+#     except Exception as e:
+#         return str(e)
+#
+# @app.route("/downloadInstitution")
+# def downloadInstitution():
+#     wb = Workbook()
+#     ws = wb.active
+#     cur = mysql.connection.cursor()
+#     queryOneLength = cur.execute("DESC institution;")
+#     query = cur.fetchall()
+#     labels = []
+#     for i in range(0, queryOneLength):
+#         labels.append(query[i][0])
+#     ws.append(labels)
+#
+#     queryTwoLength = cur.execute("SELECT * FROM institution;")
+#     query = cur.fetchall()
+#     for i in range(0, queryTwoLength):
+#         values = []
+#         for j in range(0, queryOneLength):
+#             values.append(query[i][j])
+#         ws.append(values)
+#
+#     mysql.connection.commit()
+#     cur.close()
+#     wb.save('static/Institution.xlsx')
+#     try:
+#         return send_file('static/Institution.xlsx', attachment_filename='Institution.xlsx')
+#     except Exception as e:
+#         return str(e)
+#
+# @app.route("/downloadRateType")
+# def downloadRateType():
+#     wb = Workbook()
+#     ws = wb.active
+#     cur = mysql.connection.cursor()
+#     queryOneLength = cur.execute("DESC rateType;")
+#     query = cur.fetchall()
+#     labels = []
+#     for i in range(0, queryOneLength):
+#         labels.append(query[i][0])
+#     ws.append(labels)
+#
+#     queryTwoLength = cur.execute("SELECT * FROM rateType;")
+#     query = cur.fetchall()
+#     for i in range(0, queryTwoLength):
+#         values = []
+#         for j in range(0, queryOneLength):
+#             values.append(query[i][j])
+#         ws.append(values)
+#
+#     mysql.connection.commit()
+#     cur.close()
+#     wb.save('static/Rate Type.xlsx')
+#     try:
+#         return send_file('static/Rate Type.xlsx', attachment_filename='Rate Type.xlsx')
+#     except Exception as e:
+#         return str(e)
+#
+# @app.route("/downloadUsers")
+# def downloadUsers():
+#     wb = Workbook()
+#     ws = wb.active
+#     cur = mysql.connection.cursor()
+#     queryOneLength = cur.execute("DESC users;")
+#     query = cur.fetchall()
+#     labels = []
+#     for i in range(0, queryOneLength):
+#         labels.append(query[i][0])
+#     ws.append(labels)
+#
+#     queryTwoLength = cur.execute("SELECT * FROM users;")
+#     query = cur.fetchall()
+#     for i in range(0, queryTwoLength):
+#         values = []
+#         for j in range(0, queryOneLength):
+#             values.append(query[i][j])
+#         ws.append(values)
+#
+#     mysql.connection.commit()
+#     cur.close()
+#     wb.save('static/Users.xlsx')
+#     try:
+#         return send_file('static/Users.xlsx', attachment_filename='Users.xlsx')
+#     except Exception as e:
+#         return str(e)
+#
+# @app.route("/downloadUsage")
+# def downloadUsage():
+#     wb = Workbook()
+#     ws = wb.active
+#     cur = mysql.connection.cursor()
+#     queryOneLength = cur.execute("DESC sessions;")
+#     query = cur.fetchall()
+#     labels = []
+#     for i in range(0, queryOneLength):
+#         labels.append(query[i][0])
+#     ws.append(labels)
+#
+#     queryTwoLength = cur.execute("SELECT * FROM sessions;")
+#     query = cur.fetchall()
+#     for i in range(0, queryTwoLength):
+#         values = []
+#         for j in range(0, queryOneLength):
+#             values.append(query[i][j])
+#         ws.append(values)
+#
+#     mysql.connection.commit()
+#     cur.close()
+#     wb.save('static/Usage.xlsx')
+#     try:
+#         return send_file('static/Usage.xlsx', attachment_filename='Usage.xlsx')
+#     except Exception as e:
+        # return str(e)
 
 
 @app.route("/alerts.html", methods=["GET", "POST"])
@@ -1177,7 +1220,7 @@ def writeUsageRecord(machine, time, userID):
                 select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s,%s,%s,%s);", (machine, "Thermionics electron-beam Evaporator", time, userID, connectedNum[0][1])
                 mysql.connection.commit()
 
-        if len(entries)==2:
+        if len(entries)==2 and len(connectedNum)>0:
             select_stmt = "SELECT * FROM users WHERE userPin = %(userPin)s"
             user = cur.execute(select_stmt, {'userPin':userID })
             user = cur.fetchall()
