@@ -2,21 +2,10 @@
 
 {% block content %}
 <div class="container content-section">
-
-  <h2>INFO</h2>
-  {% if data %}
-
-  <h2>{{data}}</h2>
-
-{% else %}
-
-<h4>No data given</h4>
-
-
-
-{% endif %}
-
   <div class="col">
+
+
+
     <form method="POST" action="">
       {{ form.csrf_token }}
       {{ form.userName.label(class="form-control-label") }}
@@ -36,7 +25,8 @@
       </div>
 
     </form>
-
+    <a href="/home.html" <button type="button" class="btn btn-outline-danger">Cancel</button></a>
   </div>
+
 </div>
 {% endblock %}
