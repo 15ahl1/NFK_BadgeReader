@@ -299,8 +299,8 @@ def userFunction():
     form.faculty.choices = faculty
     form.institution.choices = institution
     form.rateType.choices = rate
-    message = cur.execute("SELECT DISTINCT cardNumber, timeUsed FROM openCardNumber")
-    message = cur.fetchall()
+    message = cur.execute("SELECT DISTINCT cardNumber, timeUsed FROM openCardNumber ORDER BY timeUsed DESC ")
+    message = cur.fetchmany(5)
 
     if request.method == "POST":
         permissionString = ""
@@ -1120,7 +1120,7 @@ def writeUsageRecord(machine, time, userID):
             cur.execute("INSERT INTO openCardNumber(cardNumber, timeUsed) VALUES (%s,%s);", (str(userID), str(time)))
             mysql.connection.commit()
 
-        select_stmt = "SELECT * FROM entries WHERE machine = %(machine)s and userID = %(userID)s and enteredSession=\'0\'"
+        select_stmt = "SELECT * FROM entries WHERE machine = %(machine)s and userID = %(userID)s and enteredSession=0"
         entries = cur.execute(select_stmt, {'machine': machine,'userID':userID })
         entries = cur.fetchall()
 
@@ -1207,7 +1207,7 @@ def writeUsageRecord(machine, time, userID):
 
             # Make sessions record
             select_stmt = "INSERT INTO sessions(machineID,machineName,sessionStart,sessionEnd,timeUsed,rateUsed,rateTypeUsed,billAmount,userID,userName) VALUES(%(machineID)s,%(machineName)s,%(sessionStart)s,%(sessionEnd)s,%(timeUsed)s,%(rateUsed)s,%(rateTypeUsed)s,%(billAmount)s,%(userID)s, %(userName)s);"
-            cur.execute(select_stmt, {'machineID': machine,'machineName':machineData[0][1],'sessionStart': entries[0][2],'sessionEnd':entries[1][2],'timeUsed': timeUSedDecimal,'rateUsed':rateUsed,'rateTypeUsed': user[0][7],'billAmount':billAmount,'userID': userID,'userName':user[0][1]})
+            cur.execute(select_stmt, {'machineID': machine,'machineName':machineData[0][1],'sessionStart': entries[0][2],'sessionEnd':entries[1][2],'timeUsed': round(timeUSedDecimal, 2),'rateUsed':rateUsed,'rateTypeUsed': user[0][7],'billAmount':round(billAmount, 2),'userID': userID,'userName':user[0][1]})
             mysql.connection.commit()
             cur.close()
 
