@@ -3,6 +3,8 @@
 {% block content %}
 
 <div class="container content-section">
+
+  {% if message %}
   <div class="alert alert-success alert-dismissible fade show" role="alert">
 <h4>Here are the available card numbers that have been scanned:</h4>
 
@@ -26,11 +28,14 @@
   </tbody>
 </table>
 
+
+
+
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-
+  {% endif %}
   <div class="row">
 
 
@@ -138,10 +143,29 @@
           {% endif %}
         </div>
 
+<style media="screen">
+  .form-group input[type="checkbox"] {
+    display: none;
+}
 
+.form-group input[type="checkbox"] + .btn-group > label span {
+    width: 20px;
+}
 
+.form-group input[type="checkbox"] + .btn-group > label span:first-child {
+    display: none;
+}
+.form-group input[type="checkbox"] + .btn-group > label span:last-child {
+    display: inline-block;
+}
 
-
+.form-group input[type="checkbox"]:checked + .btn-group > label span:first-child {
+    display: inline-block;
+}
+.form-group input[type="checkbox"]:checked + .btn-group > label span:last-child {
+    display: none;
+}
+</style>
 
         <h5>Permissions</h5>
         <fieldset class="form-check">
@@ -181,8 +205,10 @@
 
         <div class="form-group">
           {{ form.submit(class="btn btn-outline-primary") }}
+                <a href="/home.html" <button type="button" class="btn btn-outline-danger">Cancle</button></a>
         </div>
       </form>
+
     </div>
 
     <div class="col">
@@ -203,6 +229,7 @@
         </table>
       </div>
     </div>
+  </div>
   </div>
 
 

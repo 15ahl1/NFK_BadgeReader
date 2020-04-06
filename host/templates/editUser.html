@@ -3,6 +3,9 @@
 {% block content %}
 <div class="container content-section">
   <div class="col">
+
+
+
     <form method="POST" action="">
       {{ form.csrf_token }}
       {{ form.userName.label(class="form-control-label") }}
@@ -22,6 +25,7 @@
       </div>
 
     </form>
+    <a href="/home.html" <button type="button" class="btn btn-outline-danger">Cancle</button></a>
   </div>
 
 </div>

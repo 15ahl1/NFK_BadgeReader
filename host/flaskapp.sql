@@ -11,6 +11,16 @@ CREATE TABLE users(
   PRIMARY KEY (userID)
 );
 
+CREATE TABLE alerted(
+  alertID int not null auto_increment PRIMARY KEY,
+  machine varchar(50),
+  machineName varchar(50),
+  timeUsed datetime,
+  userID varchar(50),
+  userName varchar(100)
+);
+
+
 
 CREATE TABLE entries(
   entrieID int not null auto_increment PRIMARY KEY,
@@ -28,9 +38,6 @@ CREATE TABLE openCardNumber(
 );
 
 
-
-
-
 CREATE TABLE machines(
   machine varchar(50),
   name varchar(100),
@@ -41,25 +48,25 @@ CREATE TABLE machines(
 );
 
 CREATE TABLE machine1 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE machine2 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE machine3 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE machine4 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE machine5 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE machine6 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE machine7 (
-  userID int);
+  userID varchar(50));
 
 CREATE TABLE supervisors (
   superID int not null auto_increment,
@@ -134,6 +141,9 @@ INSERT INTO `rateType` (`ratename`, `rateAmount`) VALUES ('Service Project', "33
 
 INSERT INTO openCardNumber(cardNumber, timeUsed) values ('12345676766','2020-03-29 00:09:40');
 INSERT INTO openCardNumber(cardNumber, timeUsed) values ('8585','2020-08-29 00:09:40');
+
+
+INSERT INTO alerted(machine, machinename, timeUsed, userID, userName) VALUES ('98:01:a7:8f:00:99',"Oxford Lasers Micromachining Laser", "2020-03-29 00:09:40", "8585", "Mac Furlong");
 
 
 -- Three Sessions
