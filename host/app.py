@@ -1117,9 +1117,8 @@ def writeUsageRecord(machine, time, userID):
         connectedNum = cur.fetchall()
 
         if len(connectedNum) == 0:
-            cur.execute("INSERT INTO openCardNumber (cardNumber, timeUsed) VALUES (%s, %s);", (str(userID), str(time)))
+            cur.execute("INSERT INTO openCardNumber(cardNumber, timeUsed) VALUES (%s,%s);", (str(userID), str(time)))
             mysql.connection.commit()
-
 
         select_stmt = "SELECT * FROM entries WHERE machine = %(machine)s and userID = %(userID)s and enteredSession=\'0\'"
         entries = cur.execute(select_stmt, {'machine': machine,'userID':userID })
