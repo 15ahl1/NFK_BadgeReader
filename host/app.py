@@ -1117,14 +1117,16 @@ def writeUsageRecord(machine, time, userID):
         connectedNum = cur.fetchall()
 
         if len(connectedNum) == 0:
-            select_stmt = "INSERT INTO openCardNumber(cardNumber, timeUsed) VALUES (%s,%s)"
-            connectedNum = cur.execute(select_stmt, {'cardNumber':userID, 'timeUsed' : time })
+            cur.execute("INSERT INTO openCardNumber (cardNumber, timeUsed) VALUES (%s, %s);", (str(userID), str(time)))
+            mysql.connection.commit()
+
 
         select_stmt = "SELECT * FROM entries WHERE machine = %(machine)s and userID = %(userID)s and enteredSession=\'0\'"
         entries = cur.execute(select_stmt, {'machine': machine,'userID':userID })
         entries = cur.fetchall()
 
-        machineName = cur.execute("SELECT * FROM machines WHERE machhine=" + str(machine))
+        machineName = cur.execute("SELECT * FROM machines WHERE machine=\'" + str(machine) + "\'")
+        machineName = cur.fetchall()
         machineName = machineName[0][1]
 
         if machineName == "Oxford Lasers Micromachining Laser":
@@ -1176,8 +1178,6 @@ def writeUsageRecord(machine, time, userID):
                 select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s,%s,%s,%s);", (machine, "Thermionics electron-beam Evaporator", time, userID, connectedNum[0][1])
                 mysql.connection.commit()
 
-
-
         if len(entries)==2:
             select_stmt = "SELECT * FROM users WHERE userPin = %(userPin)s"
             user = cur.execute(select_stmt, {'userPin':userID })
@@ -1220,13 +1220,6 @@ def writeUsageRecord(machine, time, userID):
             cur.execute(select_stmt, {'entrieID': entries[1][0]})
             mysql.connection.commit()
             cur.close()
-
-
-
-
-
-
-
 
 def machineStatus(machine):
     print("Updating machine status...")
