@@ -16,11 +16,13 @@
     <td>Used this machine at: {{ aler[3] }}</td>
     <td><a href="/deleteAlert/{{aler[0]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
   </tr>
-  {% endfor %}
+    {% endfor %}
 </table>
+<a href="/makingAnAlertGo" <button type="button" class="float-right btn btn-danger">Make Alert</button>
 
 
 {% else %}
+
 
 
 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -30,7 +32,10 @@
   </button>
 </div>
 
+<a href="/makingAnAlertGo" <button type="button" class="float-right btn btn-danger">Make Alert</button>
 </div>
+
+
 
 {% endif %}
 
