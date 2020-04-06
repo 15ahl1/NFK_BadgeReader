@@ -46,8 +46,8 @@ if __name__ == "__main__":
 
     clientDriver = ClientDriver()
 
-    data0 = clientDriver.config["Pi"]["Data0"]
-    data1 = clientDriver.config["Pi"]["Data1"]
+    data0 = int(clientDriver.config["Pi"]["Data0"])
+    data1 = int(clientDriver.config["Pi"]["Data1"])
 
     w = Wiegand(pi, data0, data1, callback)
 
