@@ -299,8 +299,8 @@ def userFunction():
     form.faculty.choices = faculty
     form.institution.choices = institution
     form.rateType.choices = rate
-    message = cur.execute("SELECT DISTINCT cardNumber, timeUsed FROM openCardNumber")
-    message = cur.fetchall()
+    message = cur.execute("SELECT DISTINCT cardNumber, timeUsed FROM openCardNumber ORDER BY timeUsed DESC ")
+    message = cur.fetchmany(5)
 
     if request.method == "POST":
         permissionString = ""
@@ -548,6 +548,7 @@ def editUserFunction(userID = None):
     return render_template("/editUser.html", form=form)
 
 
+
 @app.route('/selectedEditUser/<userID>', methods=['GET', 'POST',  'PUT'])
 def selectedEditUserFunction(userID):
     cur = mysql.connection.cursor()
@@ -559,55 +560,96 @@ def selectedEditUserFunction(userID):
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO machine1(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
-
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine1 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
 
         if(Editform.perMac2.data == True):
             permissionString += "1"
             cur.execute("INSERT INTO machine2(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine2 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
 
         if(Editform.perMac3.data == True):
             permissionString += "1"
             cur.execute("INSERT INTO machine3(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine3 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
 
         if(Editform.perMac4.data == True):
             permissionString += "1"
             cur.execute("INSERT INTO machine4(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine4 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
+
 
         if(Editform.perMac5.data == True):
             permissionString += "1"
             cur.execute("INSERT INTO machine5(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine5 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
 
         if(Editform.perMac6.data == True):
             permissionString += "1"
             cur.execute("INSERT INTO machine6(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine6 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
 
         if(Editform.perMac7.data == True):
             permissionString += "1"
             cur.execute("INSERT INTO machine7(userID) VALUES (%s)", ([Editform.userPin.data]))
             mysql.connection.commit()
         else:
-            permissionString += "0"
+            try:
+                permissionString += "0"
+                cur = mysql.connection.cursor()
+                cur.execute("DELETE FROM machine7 where userID=" + str(Editform.userPin.data))
+                mysql.connection.commit()
+            except:
+                pass
         select_stmt = "UPDATE users SET username = %(username)s, userPin = %(userPin)s, supervisor = %(supervisor)s, department = %(department)s, faculty = %(faculty)s, institution = %(institution)s, rateType = %(rateType)s, Permissions = %(Permissions)s WHERE userID= %(userID)s;"
         cur.execute(select_stmt, {'username': Editform.userName.data, 'userPin': Editform.userPin.data, 'supervisor':Editform.supervisor.data, 'department': Editform.department.data, 'faculty': Editform.faculty.data, 'institution': Editform.institution.data, 'rateType': Editform.rateType.data, 'Permissions': permissionString,  'userID': str(userID)})
         mysql.connection.commit()
-        print(permissionString)
         return redirect("/addUser.html")
     select_stmt = "SELECT * FROM users WHERE userID = %(userID)s"
     editThisUser = cur.execute(select_stmt, {'userID': userID})
@@ -630,7 +672,6 @@ def selectedEditUserFunction(userID):
     Editform.faculty.choices = faculty
     Editform.institution.choices = institution
     Editform.rateType.choices = rate
-    print(editThisUser[0][8][2:3])
     Editform.perMac1.data = int(editThisUser[0][8][0:1])
     Editform.perMac2.data = int(editThisUser[0][8][1:2])
     Editform.perMac3.data = int(editThisUser[0][8][2:3])
@@ -1102,141 +1143,139 @@ def deleteSession(sessionID):
     cur.close()
     return redirect("/reportUsage.html")
 
-
 def writeUsageRecord(machine, time, userID):
     with app.app_context():
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO entries (machine,timeUsed, userID, inUse, enteredSession) VALUES (%s, %s, %s, %s, %s);",
-                    (machine, time, userID, str(1), str(0)))
-        mysql.connection.commit()
-        cur.close()
-        cur = mysql.connection.cursor()
 
-        select_stmt = "SELECT * FROM users WHERE userID = %(userID)s"
+        select_stmt = "SELECT * FROM users WHERE userPin = %(userID)s"
         connectedNum = cur.execute(select_stmt, {'userID':userID })
         connectedNum = cur.fetchall()
 
+
         if len(connectedNum) == 0:
-            select_stmt = "INSERT INTO openCardNumber(cardNumber, timeUsed) VALUES (%s,%s)"
-            connectedNum = cur.execute(select_stmt, {'cardNumber':userID, 'timeUsed' : time })
-
-        select_stmt = "SELECT * FROM entries WHERE machine = %(machine)s and userID = %(userID)s and enteredSession=\'0\'"
-        entries = cur.execute(select_stmt, {'machine': machine,'userID':userID })
-        entries = cur.fetchall()
-
-        machineName = cur.execute("SELECT * FROM machines WHERE machhine=" + str(machine))
-        machineName = machineName[0][1]
-
-        if machineName == "Oxford Lasers Micromachining Laser":
-            allowed = cur.execute("Select * from machine1 where userID=" + str(userID))
-            allowed = cur.fetchall()
-            if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,"Oxford Lasers Micromachining Laser", time, userID, connectedNum[0][1])
-                mysql.connection.commit()
-
-        if machineName == "Raith Pioneer Electron-beam":
-            allowed = cur.execute("Select * from machine2 where userID=" + str(userID))
-            allowed = cur.fetchall()
-            if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,"Raith Pioneer Electron-beam", time, userID, connectedNum[0][1])
-                mysql.connection.commit()
-
-        if machineName == "NxQ 4006 Mask Aligner":
-            allowed = cur.execute("Select * from machine3 where userID=" + str(userID))
-            allowed = cur.fetchall()
-            if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,"NxQ 4006 Mask Aligner", time, userID, connectedNum[0][1])
-                mysql.connection.commit()
-
-        if machineName == "IMP SF-100 Xpress Maskless Photolithography System":
-            allowed = cur.execute("Select * from machine4 where userID=" + str(userID))
-            allowed = cur.fetchall()
-            if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,"IMP SF-100 Xpress Maskless Photolithography System", time, userID, connectedNum[0][1])
-                mysql.connection.commit()
-
-        if machineName == "Trion MiniLock III Reactive Ion Etcher":
-            allowed = cur.execute("Select * from machine5 where userID=" + str(userID))
-            allowed = cur.fetchall()
-            if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,"Trion MiniLock III Reactive Ion Etcher", time, userID, connectedNum[0][1])
-                mysql.connection.commit()
-
-        if machineName == "PVD 75 Sputtering System":
-            allowed = cur.execute("Select * from machine6 where userID=" + str(userID))
-            allowed = cur.fetchall()
-            if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s, %s,%s,%s);", (machine,"PVD 75 Sputtering System", time, userID, connectedNum[0][1])
-                mysql.connection.commit()
-
-        if machineName == "Thermionics electron-beam Evaporator":
-            allowed = cur.execute("Select * from machine7 where userID=" + str(userID))
-            allowed = cur.fetchall()
-            if len(allowed) == 0:
-                select_stmt = "INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s,%s,%s,%s,%s);", (machine, "Thermionics electron-beam Evaporator", time, userID, connectedNum[0][1])
-                mysql.connection.commit()
-
-
-
-        if len(entries)==2:
-            select_stmt = "SELECT * FROM users WHERE userPin = %(userPin)s"
-            user = cur.execute(select_stmt, {'userPin':userID })
-            user = cur.fetchall()
-
-            select_stmt = "SELECT * FROM machines WHERE machine = %(machine)s"
-            machineData = cur.execute(select_stmt, {'machine':machine })
-            machineData = cur.fetchall()
-
-            if user[0][7]=="Academic Machine Dependant":
-                rateUsed = machineData[0][3]
-            elif user[0][7]=="Institutional Machine Dependant":
-                rateUsed = machineData[0][4]
-            else:
-                rateUsed = user[0][7]
-
-            diff = entries[1][2] - entries[0][2]
-            days, seconds = diff.days, diff.seconds
-            hours = decimal.Decimal(days * 24 + seconds // 3600)
-            minutes = decimal.Decimal((seconds % 3600) // 60)
-            seconds = decimal.Decimal(seconds % 60)
-            rateUsed = decimal.Decimal(rateUsed)
-            timeUsed = str(hours) + " Hours " + str(minutes) + " Minutes " + str(seconds) + " Seconds "
-            timeUSedDecimal = decimal.Decimal(hours) + (minutes/decimal.Decimal(60)) + (seconds/decimal.Decimal(3600))
-            billAmount = rateUsed * hours + rateUsed * (minutes/decimal.Decimal(60)) + rateUsed * (seconds/decimal.Decimal(60*60))
-            record = [machine,machineData[0][1],entries[0][2],entries[1][2],timeUsed,rateUsed,user[0][7],billAmount, userID,user[0][1]]
-
-            # Make sessions record
-            select_stmt = "INSERT INTO sessions(machineID,machineName,sessionStart,sessionEnd,timeUsed,rateUsed,rateTypeUsed,billAmount,userID,userName) VALUES(%(machineID)s,%(machineName)s,%(sessionStart)s,%(sessionEnd)s,%(timeUsed)s,%(rateUsed)s,%(rateTypeUsed)s,%(billAmount)s,%(userID)s, %(userName)s);"
-            cur.execute(select_stmt, {'machineID': machine,'machineName':machineData[0][1],'sessionStart': entries[0][2],'sessionEnd':entries[1][2],'timeUsed': timeUSedDecimal,'rateUsed':rateUsed,'rateTypeUsed': user[0][7],'billAmount':billAmount,'userID': userID,'userName':user[0][1]})
+            cur.execute("INSERT INTO openCardNumber(cardNumber, timeUsed) VALUES (%s,%s);", (str(userID), str(time)))
             mysql.connection.commit()
-            cur.close()
-
-            # Update entries table to show that the entries have been moved over to the sessions table
+        else:
             cur = mysql.connection.cursor()
-            select_stmt = "update entries set enteredSession=1 where entrieID= %(entrieID)s;"
-            cur.execute(select_stmt, {'entrieID': entries[0][0]})
+            cur.execute("INSERT INTO entries (machine,timeUsed, userID, inUse, enteredSession) VALUES (%s, %s, %s, %s, %s);",
+                        (machine, time, userID, str(1), str(0)))
             mysql.connection.commit()
-            select_stmt = "update entries set enteredSession=1 where entrieID= %(entrieID)s;"
-            cur.execute(select_stmt, {'entrieID': entries[1][0]})
-            mysql.connection.commit()
-            cur.close()
+
+            select_stmt = "SELECT * FROM entries WHERE machine = %(machine)s and userID = %(userID)s and enteredSession=0"
+            entries = cur.execute(select_stmt, {'machine': machine,'userID':userID })
+            entries = cur.fetchall()
 
 
+            machineName = cur.execute("SELECT * FROM machines WHERE machine=\'" + str(machine) + "\'")
+            machineName = cur.fetchall()
+
+            allMachineID = cur.execute("SELECT * FROM machines")
+            allMachineID = cur.fetchall()
+
+            if machine == str(allMachineID[0][0]):
+
+                allowed = cur.execute("Select * from machine1 where userID=" + str(userID))
+                allowed = cur.fetchall()
+                if len(allowed) == 0:
+
+                    cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
+                    mysql.connection.commit()
 
 
+            if machine == str(allMachineID[1][0]):
+                allowed = cur.execute("Select * from machine2 where userID=" + str(userID))
+                allowed = cur.fetchall()
+                if len(allowed) == 0:
+                    cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
+                    mysql.connection.commit()
 
+            if machine == str(allMachineID[2][0]):
+                allowed = cur.execute("Select * from machine3 where userID=" + str(userID))
+                allowed = cur.fetchall()
+                if len(allowed) == 0:
+                    cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
+                    mysql.connection.commit()
+
+            if machine == str(allMachineID[3][0]):
+                allowed = cur.execute("Select * from machine4 where userID=" + str(userID))
+                allowed = cur.fetchall()
+                if len(allowed) == 0:
+                    cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
+                    mysql.connection.commit()
+
+            if machine == str(allMachineID[4][0]):
+                allowed = cur.execute("Select * from machine5 where userID=" + str(userID))
+                allowed = cur.fetchall()
+                if len(allowed) == 0:
+                    cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
+                    mysql.connection.commit()
+
+            if machine == str(allMachineID[5][0]):
+                allowed = cur.execute("Select * from machine6 where userID=" + str(userID))
+                allowed = cur.fetchall()
+                if len(allowed) == 0:
+                    cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
+                    mysql.connection.commit()
+
+            if machine == str(allMachineID[6][0]):
+                allowed = cur.execute("Select * from machine7 where userID=" + str(userID))
+                allowed = cur.fetchall()
+                if len(allowed) == 0:
+                    cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
+                    mysql.connection.commit()
+
+
+            if len(entries)==2:
+                select_stmt = "SELECT * FROM users WHERE userPin = %(userPin)s"
+                user = cur.execute(select_stmt, {'userPin':userID })
+                user = cur.fetchall()
+
+                select_stmt = "SELECT * FROM machines WHERE machine = %(machine)s"
+                machineData = cur.execute(select_stmt, {'machine':machine })
+                machineData = cur.fetchall()
+
+                if user[0][7]=="Academic Machine Dependant":
+                    rateUsed = machineData[0][3]
+                elif user[0][7]=="Institutional Machine Dependant":
+                    rateUsed = machineData[0][4]
+                else:
+                    rateUsed = user[0][7]
+
+                diff = entries[1][2] - entries[0][2]
+                days, seconds = diff.days, diff.seconds
+                hours = decimal.Decimal(days * 24 + seconds // 3600)
+                minutes = decimal.Decimal((seconds % 3600) // 60)
+                seconds = decimal.Decimal(seconds % 60)
+                rateUsed = decimal.Decimal(rateUsed)
+                timeUsed = str(hours) + " Hours " + str(minutes) + " Minutes " + str(seconds) + " Seconds "
+                timeUSedDecimal = decimal.Decimal(hours) + (minutes/decimal.Decimal(60)) + (seconds/decimal.Decimal(3600))
+                billAmount = rateUsed * hours + rateUsed * (minutes/decimal.Decimal(60)) + rateUsed * (seconds/decimal.Decimal(60*60))
+                record = [machine,machineData[0][1],entries[0][2],entries[1][2],timeUsed,rateUsed,user[0][7],billAmount, userID,user[0][1]]
+
+                # Make sessions record
+                select_stmt = "INSERT INTO sessions(machineID,machineName,sessionStart,sessionEnd,timeUsed,rateUsed,rateTypeUsed,billAmount,userID,userName) VALUES(%(machineID)s,%(machineName)s,%(sessionStart)s,%(sessionEnd)s,%(timeUsed)s,%(rateUsed)s,%(rateTypeUsed)s,%(billAmount)s,%(userID)s, %(userName)s);"
+                cur.execute(select_stmt, {'machineID': machine,'machineName':machineData[0][1],'sessionStart': entries[0][2],'sessionEnd':entries[1][2],'timeUsed': round(timeUSedDecimal, 2),'rateUsed':rateUsed,'rateTypeUsed': user[0][7],'billAmount':round(billAmount, 2),'userID': userID,'userName':user[0][1]})
+                mysql.connection.commit()
+                cur.close()
+
+                # Update entries table to show that the entries have been moved over to the sessions table
+                cur = mysql.connection.cursor()
+                select_stmt = "update entries set enteredSession=1 where entrieID= %(entrieID)s;"
+                cur.execute(select_stmt, {'entrieID': entries[0][0]})
+                mysql.connection.commit()
+                select_stmt = "update entries set enteredSession=1 where entrieID= %(entrieID)s;"
+                cur.execute(select_stmt, {'entrieID': entries[1][0]})
+                mysql.connection.commit()
+                cur.close()
 
 
 
 def machineStatus(machine):
-    print("Updating machine status...")
     with app.app_context():
         cur = mysql.connection.cursor()
         select_stmt = "SELECT inUse FROM machines WHERE machine = %(machine)s"
         cur.execute(select_stmt, {'machine': machine})
         status = cur.fetchone()
-        print(status)
-        print("The machine status is " + str(status[0]))
         if status[0] == 0:
             update_stmt = "UPDATE machines SET inUse = '1' WHERE machine = %(machine)s"
             cur.execute(update_stmt, {'machine': machine})

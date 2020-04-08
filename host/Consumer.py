@@ -44,7 +44,10 @@ class Consumer:
             print("Message saved")
             message = ""
 
-#Needs to be an Absolute Path to get proper saving functionality
-d = Database("/Users/jd/Documents/Capstone/output.txt")
-c = Consumer("/Users/jd/Documents/Capstone/output.txt", 6969, d)
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
+d = Database("./output.txt")
+c = Consumer("./output.txt", 6969, d)
 c.consume()
