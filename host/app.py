@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, flash, redirect, request, sen
 from flask_wtf import FlaskForm
 from forms import *
 from flask_mysqldb import MySQL
-from openpyxl import Workbook
+# from openpyxl import Workbook
 import yaml
 import json
 import os
@@ -453,11 +453,14 @@ def machineFunction():
     machines = cur.fetchall()
     message=""
     if form.validate_on_submit():
+        print("HELLO")
         message = "New Machine Made"
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO machines(machine, name, inUse,  academicRate, institutionalRate) VALUES (%s, %s, %s,%s, %s)", ([form.MachineMacAddress.data,form.MachineName.data, 0, form.academicAmount.data, form.industrialAmount.data]))
+        print("HELLO 2")
+        cur.execute("INSERT INTO machines(machine, name, inUse,  academicRate, industrialRate) VALUES (%s, %s, %s,%s, %s)", ([form.MachineMacAddress.data,form.MachineName.data, 0, form.academicAmount.data, form.industrialAmount.data]))
         mysql.connection.commit()
         cur.close()
+        print("HELLO 3")
         cur = mysql.connection.cursor()
         machines = cur.execute("SELECT * FROM machines")
         machines = cur.fetchall()
@@ -471,7 +474,7 @@ def editMachine(machineID):
     machines = cur.execute("SELECT * FROM machines")
     machines = cur.fetchall()
     Editform = makeNewMachine()
-    editMachine = cur.execute("SELECT machine, name, academicRate, institutionalRate FROM machines WHERE machineID=\"" + str(machineID) + "\"")
+    editMachine = cur.execute("SELECT machine, name, academicRate, industrialRate FROM machines WHERE machineID=\"" + str(machineID) + "\"")
     editMachine = cur.fetchall()
     cur.close()
     Editform.MachineName.data = editMachine[0][1]
@@ -480,8 +483,8 @@ def editMachine(machineID):
     Editform.industrialAmount.data = float(editMachine[0][3])
     if request.method == "POST":
         cur = mysql.connection.cursor()
-        select_stmt = "UPDATE machines SET machine = %(machine)s, name = %(name)s, academicRate = %(academicRate)s, institutionalRate = %(institutionalRate)s WHERE machineID= %(machineID)s;"
-        cur.execute(select_stmt, {'machine': request.form.get("MachineMacAddress"), 'name': request.form.get("MachineName"), 'academicRate':request.form.get("academicAmount"), 'institutionalRate': request.form.get("industrialAmount"), 'machineID': str(machineID)})
+        select_stmt = "UPDATE machines SET machine = %(machine)s, name = %(name)s, academicRate = %(academicRate)s, industrialRate = %(industrialRate)s WHERE machineID= %(machineID)s;"
+        cur.execute(select_stmt, {'machine': request.form.get("MachineMacAddress"), 'name': request.form.get("MachineName"), 'academicRate':request.form.get("academicAmount"), 'industrialRate': request.form.get("industrialAmount"), 'machineID': str(machineID)})
         mysql.connection.commit()
         message = "Made an edit to the machine: " + str(request.form.get("MachineName"))
         return redirect("/addMachine.html" )
@@ -1236,7 +1239,7 @@ def writeUsageRecord(machine, time, userID):
 
                 if user[0][7]=="Academic Machine Dependant":
                     rateUsed = machineData[0][3]
-                elif user[0][7]=="Institutional Machine Dependant":
+                elif user[0][7]=="Industrial Machine Dependant":
                     rateUsed = machineData[0][4]
                 else:
                     rateUsed = user[0][7]
