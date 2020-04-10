@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, flash, redirect, request, sen
 from flask_wtf import FlaskForm
 from forms import *
 from flask_mysqldb import MySQL
-# from openpyxl import Workbook
+from openpyxl import Workbook
 import yaml
 import json
 import os
