@@ -453,14 +453,11 @@ def machineFunction():
     machines = cur.fetchall()
     message=""
     if form.validate_on_submit():
-        print("HELLO")
         message = "New Machine Made"
         cur = mysql.connection.cursor()
-        print("HELLO 2")
         cur.execute("INSERT INTO machines(machine, name, inUse,  academicRate, industrialRate) VALUES (%s, %s, %s,%s, %s)", ([form.MachineMacAddress.data,form.MachineName.data, 0, form.academicAmount.data, form.industrialAmount.data]))
         mysql.connection.commit()
         cur.close()
-        print("HELLO 3")
         cur = mysql.connection.cursor()
         machines = cur.execute("SELECT * FROM machines")
         machines = cur.fetchall()
@@ -690,7 +687,7 @@ def selectedEditUserFunction(userID):
 @app.route('/reportUsage.html', methods=['GET', 'POST',  'PUT'])
 def reportUsageFunction():
     cur = mysql.connection.cursor()
-    sessions = cur.execute("SELECT * FROM sessions ORDER BY sessionStart")
+    sessions = cur.execute("SELECT * FROM sessions ORDER BY sessionStart DESC")
     sessions = cur.fetchall()
     return render_template("/reportUsage.html", sessions=sessions)
 
@@ -1048,19 +1045,21 @@ def alertsFunction():
 @app.route('/deleteUser/<string:userIdentificationNumber>')
 def deleteUser(userIdentificationNumber):
     cur = mysql.connection.cursor()
-    userPin = cur.execute("SELECT * FROM users where userID=" +
-                str(userIdentificationNumber))
+    print("Hello" + str(userIdentificationNumber))
+    userPin = cur.execute("SELECT * FROM users where userID=" + str(userIdentificationNumber))
+    print("Hello" + str(userIdentificationNumber))
     userPin = cur.fetchall()
     userPin = userPin[0][2]
-    cur.execute("DELETE FROM machine1 where userID=" + str(userPin))
-    cur.execute("DELETE FROM machine2 where userID=" + str(userPin))
-    cur.execute("DELETE FROM machine3 where userID=" + str(userPin))
-    cur.execute("DELETE FROM machine4 where userID=" + str(userPin))
-    cur.execute("DELETE FROM machine5 where userID=" + str(userPin))
-    cur.execute("DELETE FROM machine6 where userID=" + str(userPin))
-    cur.execute("DELETE FROM machine7 where userID=" + str(userPin))
-    cur.execute("DELETE FROM users where userID=" +
-                str(userIdentificationNumber))
+    print("Hello again" + str(userPin))
+    cur.execute("DELETE FROM machine1 where userID=\'" + str(userPin)) + "\'"
+    cur.execute("DELETE FROM machine2 where userID=\'" + str(userPin)) + "\'"
+    cur.execute("DELETE FROM machine3 where userID=\'" + str(userPin)) + "\'"
+    cur.execute("DELETE FROM machine4 where userID=\'" + str(userPin)) + "\'"
+    cur.execute("DELETE FROM machine5 where userID=\'" + str(userPin)) + "\'"
+    cur.execute("DELETE FROM machine6 where userID=\'" + str(userPin)) + "\'"
+    cur.execute("DELETE FROM machine7 where userID=\'" + str(userPin)) + "\'"
+    print("Hello again" + str(userIdentificationNumber))
+    cur.execute("DELETE FROM users where userID=\'" + str(userIdentificationNumber)) + "\'"
     mysql.connection.commit()
 
     cur.close()
@@ -1148,6 +1147,7 @@ def deleteSession(sessionID):
 
 def writeUsageRecord(machine, time, userID):
     with app.app_context():
+        print("HELLO")
         cur = mysql.connection.cursor()
 
         select_stmt = "SELECT * FROM users WHERE userPin = %(userID)s"
@@ -1158,6 +1158,8 @@ def writeUsageRecord(machine, time, userID):
         if len(connectedNum) == 0:
             cur.execute("INSERT INTO openCardNumber(cardNumber, timeUsed) VALUES (%s,%s);", (str(userID), str(time)))
             mysql.connection.commit()
+            return
+
         else:
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO entries (machine,timeUsed, userID, inUse, enteredSession) VALUES (%s, %s, %s, %s, %s);",
@@ -1177,7 +1179,8 @@ def writeUsageRecord(machine, time, userID):
 
             if machine == str(allMachineID[0][0]):
 
-                allowed = cur.execute("Select * from machine1 where userID=" + str(userID))
+                print("HELOO FROM HERE ")
+                allowed = cur.execute("Select * from machine1 where userID=\'" + str(userID) + "\'")
                 allowed = cur.fetchall()
                 if len(allowed) == 0:
 
@@ -1186,42 +1189,42 @@ def writeUsageRecord(machine, time, userID):
 
 
             if machine == str(allMachineID[1][0]):
-                allowed = cur.execute("Select * from machine2 where userID=" + str(userID))
+                allowed = cur.execute("Select * from machine2 where userID=\'" + str(userID) + "\'")
                 allowed = cur.fetchall()
                 if len(allowed) == 0:
                     cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
                     mysql.connection.commit()
 
             if machine == str(allMachineID[2][0]):
-                allowed = cur.execute("Select * from machine3 where userID=" + str(userID))
+                allowed = cur.execute("Select * from machine3 where userID=\'" + str(userID) + "\'")
                 allowed = cur.fetchall()
                 if len(allowed) == 0:
                     cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
                     mysql.connection.commit()
 
             if machine == str(allMachineID[3][0]):
-                allowed = cur.execute("Select * from machine4 where userID=" + str(userID))
+                allowed = cur.execute("Select * from machine4 where userID=\'" + str(userID) + "\'")
                 allowed = cur.fetchall()
                 if len(allowed) == 0:
                     cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
                     mysql.connection.commit()
 
             if machine == str(allMachineID[4][0]):
-                allowed = cur.execute("Select * from machine5 where userID=" + str(userID))
+                allowed = cur.execute("Select * from machine5 where userID=\'" + str(userID) + "\'")
                 allowed = cur.fetchall()
                 if len(allowed) == 0:
                     cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
                     mysql.connection.commit()
 
             if machine == str(allMachineID[5][0]):
-                allowed = cur.execute("Select * from machine6 where userID=" + str(userID))
+                allowed = cur.execute("Select * from machine6 where userID=\'" + str(userID) + "\'")
                 allowed = cur.fetchall()
                 if len(allowed) == 0:
                     cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
                     mysql.connection.commit()
 
             if machine == str(allMachineID[6][0]):
-                allowed = cur.execute("Select * from machine7 where userID=" + str(userID))
+                allowed = cur.execute("Select * from machine7 where userID=\'" + str(userID) + "\'")
                 allowed = cur.fetchall()
                 if len(allowed) == 0:
                     cur.execute("INSERT INTO alerted(machine, machineName, timeUsed, userID, userName) VALUES (%s, %s, %s, %s, %s);", (str(machine), machineName[0][1], time, userID, connectedNum[0][1]))
@@ -1262,6 +1265,13 @@ def writeUsageRecord(machine, time, userID):
                 cur.close()
 
                 # Update entries table to show that the entries have been moved over to the sessions table
+                print("Hello from here")
+                cur.execute("Select * from openCardNumber;")
+                openCards = cur.fetchall()
+                for num in openCards:
+                    print(num)
+
+
                 cur = mysql.connection.cursor()
                 select_stmt = "update entries set enteredSession=1 where entrieID= %(entrieID)s;"
                 cur.execute(select_stmt, {'entrieID': entries[0][0]})
@@ -1273,7 +1283,7 @@ def writeUsageRecord(machine, time, userID):
 
 
 
-def machineStatus(machine):
+def machineStatus(machine, userID):
     with app.app_context():
         cur = mysql.connection.cursor()
         select_stmt = "SELECT inUse FROM machines WHERE machine = %(machine)s"

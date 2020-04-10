@@ -1,7 +1,7 @@
 #Stub Class for Database written by: Alastair Lewis
 #Michael Reinhart needs to update this file with any Database code that he needs
-from host.app import writeUsageRecord
-from host.app import machineStatus
+from app import writeUsageRecord
+from app import machineStatus
 import json
 
 class Database:
@@ -16,4 +16,4 @@ class Database:
         time = record["time"]
         userID = record["userID"]
         writeUsageRecord(machine, time, userID)
-        machineStatus(machine)
+        machineStatus(machine, userID)
