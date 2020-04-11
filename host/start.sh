@@ -16,6 +16,6 @@ service mysql stop
 service mysql start
 echo "Installation Complete"
 clear
-python3 Consumer.py & mysql -uroot
+mysql -uroot
 
 
