@@ -8,5 +8,7 @@ TO START THIS APPLICATION
 6. mysql> use flaskapp;
 7. mysql> source flaskapp.sql; (First Time)
 8. mysql> exit
-9. sudo python3 -m flask run
-10. Open a web browser and navigate to: http://127.0.0.1:5000/
+9. sudo python3 -m flask run 
+10. Open a new terminal without closing the first one, navigate to the host directory
+11. run the command: python3 Consumer.py
+12. Open a web browser and navigate to: http://127.0.0.1:5000/
