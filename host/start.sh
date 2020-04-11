@@ -15,6 +15,7 @@ sudo pip3 install openpyxl
 service mysql stop
 service mysql start
 echo "Installation Complete"
-python3 Consumer.py & mysql -uroot
 clear
+python3 Consumer.py & mysql -uroot
+
 
