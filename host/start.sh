@@ -14,7 +14,7 @@ sudo pip3 install pandas
 sudo pip3 install openpyxl
 service mysql stop
 service mysql start
-python3 Consumer.py 
 echo "Installation Complete"
+python3 Consumer.py & mysql -uroot
 clear
-mysql -uroot
+
