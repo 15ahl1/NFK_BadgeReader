@@ -20,33 +20,33 @@
   {% endif %}
 
   <table class="table">
-  <br><br>
-  <thead>
-  <tr>
-   <th scope="col">Machine Name</th>
-   <th scope="col">Time Used For</th>
-   <th scope="col">Rate Name</th>
-   <th scope="col">Rate Amount</th>
-   <th scope="col">Bill Amount</th>
-   <th scope="col">User Name</th>
-  </tr>
-  </thead>
+    <br><br>
+    <thead>
+      <tr>
+        <th scope="col" style="text-align: center">Machine Name</th>
+        <th scope="col" style="text-align: center">Session Start Date</th>
+        <th scope="col" style="text-align: center">Time Used For</th>
+        <th scope="col" style="text-align: center">Rate Name</th>
+        <th scope="col" style="text-align: center">Rate Amount</th>
+        <th scope="col" style="text-align: center">Bill Amount</th>
+        <th scope="col" style="text-align: center">User Name</th>
+      </tr>
+    </thead>
     {% for sessions in sessions %}
     <tr>
       <td> {{sessions[2]}} </td>
+      <td> {{sessions[3]}} </td>
       <td> {{sessions[5]}} Hours</td>
       <td> {{sessions[7]}} </td>
       <td> {{sessions[6]}} </td>
       <td> ${{sessions[8]}} </td>
       <td> {{sessions[10]}} </td>
       <td><a href="/editASession/{{sessions[0]}}" <button type="button" class="float-right btn btn-warning">Edit</button></td>
-        <td><a href="/deleteASession/{{sessions[0]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
+      <td><a href="/deleteASession/{{sessions[0]}}" <button type="button" class="float-right btn btn-danger">Delete</button></td>
     </tr>
     {% endfor %}
   </table>
 
-
-{{entries}}
 
 </div>
 

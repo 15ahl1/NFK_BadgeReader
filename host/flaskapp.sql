@@ -47,25 +47,25 @@ CREATE TABLE machines(
   machineID int not null auto_increment PRIMARY KEY
 );
 
-CREATE TABLE machine1 (
+CREATE TABLE OxfordLaserPer (
   userID varchar(50));
 
-CREATE TABLE machine2 (
+CREATE TABLE RaithBeamPer (
   userID varchar(50));
 
-CREATE TABLE machine3 (
+CREATE TABLE NxQAlignerPer (
   userID varchar(50));
 
-CREATE TABLE machine4 (
+CREATE TABLE IMPSystemPer (
   userID varchar(50));
 
-CREATE TABLE machine5 (
+CREATE TABLE TrionEtcherPer (
   userID varchar(50));
 
-CREATE TABLE machine6 (
+CREATE TABLE PVDSystemPer (
   userID varchar(50));
 
-CREATE TABLE machine7 (
+CREATE TABLE ThermionicsPer (
   userID varchar(50));
 
 CREATE TABLE supervisors (
@@ -116,6 +116,11 @@ CREATE TABLE sessions (
   userName varchar(50)
 );
 
+
+INSERT INTO supervisors (superName) values ("Graham Gibson");
+INSERT INTO departments (DeptName) values ("Computer Science");
+INSERT INTO faculty (facultyName) values ("Queen's University");
+INSERT INTO institution (institutionName) values ("CMC");
 
 INSERT INTO rateType (rateName, rateAmount) values ("Academic", "Academic Machine Dependant");
 INSERT INTO rateType (rateName, rateAmount) values ("Industrial", "Industrial Machine Dependant");
