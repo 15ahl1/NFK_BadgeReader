@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, flash, redirect, request, sen
 from flask_wtf import FlaskForm
 from forms import *
 from flask_mysqldb import MySQL
-from openpyxl import Workbook
+# from openpyxl import Workbook
 import yaml
 import json
 import os
@@ -417,7 +417,7 @@ def configure():
             rateTypeName = rateForm.rateTypeName.data
             rateAmount = rateForm.rateAmount.data
             if str(rateAmount)=="None":
-                cur.execute("INSERT INTO rateType (rateName, rateAmount) VALUES (%s, %s)", ([rateTypeName, str(rateTypeName)+" Machine Dependant"]))
+                cur.execute("INSERT INTO rateType (rateName, rateAmount) VALUES (%s, %s)", ([rateTypeName, str(rateTypeName)+" Machine dependent"]))
                 mysql.connection.commit()
                 cur.close()
             else:
@@ -1256,9 +1256,10 @@ def writeUsageRecord(machine, time, userID):
                 machineData = cur.execute(select_stmt, {'machine':machine })
                 machineData = cur.fetchall()
 
-                if user[0][7]=="Academic Machine Dependant":
+                print(user[0][7])
+                if "Academic" in user[0][7]:
                     rateUsed = machineData[0][3]
-                elif user[0][7]=="Industrial Machine Dependant":
+                elif "Industrial" in user[0][7]:
                     rateUsed = machineData[0][4]
                 else:
                     rateUsed = user[0][7]
@@ -1268,6 +1269,7 @@ def writeUsageRecord(machine, time, userID):
                 hours = decimal.Decimal(days * 24 + seconds // 3600)
                 minutes = decimal.Decimal((seconds % 3600) // 60)
                 seconds = decimal.Decimal(seconds % 60)
+                print(rateUsed)
                 rateUsed = decimal.Decimal(rateUsed)
                 timeUsed = str(hours) + " Hours " + str(minutes) + " Minutes " + str(seconds) + " Seconds "
                 timeUSedDecimal = decimal.Decimal(hours) + (minutes/decimal.Decimal(60)) + (seconds/decimal.Decimal(3600))

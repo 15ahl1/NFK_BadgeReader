@@ -122,8 +122,8 @@ INSERT INTO departments (DeptName) values ("Computer Science");
 INSERT INTO faculty (facultyName) values ("Queen's University");
 INSERT INTO institution (institutionName) values ("CMC");
 
-INSERT INTO rateType (rateName, rateAmount) values ("Academic", "Academic Machine Dependant");
-INSERT INTO rateType (rateName, rateAmount) values ("Industrial", "Industrial Machine Dependant");
+INSERT INTO rateType (rateName, rateAmount) values ("Academic", "Academic Machine Dependent");
+INSERT INTO rateType (rateName, rateAmount) values ("Industrial", "Industrial Machine Dependent");
 
 INSERT INTO machines(machine, name, inUse, academicRate, industrialRate) VALUES('98:01:a7:8f:00:99', 'Oxford Lasers Micromachining Laser', '0',66.99, 99.25);
 INSERT INTO machines(machine, name, inUse, academicRate, industrialRate) VALUES('b8:27:eb:61:98:05', 'Raith Pioneer Electron-beam', '0', 6, 99);
