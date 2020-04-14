@@ -12,6 +12,7 @@ sudo pip3 install pyyaml
 sudo pip3 install openpyxl
 sudo pip3 install pandas
 sudo pip3 install openpyxl
+sudo pip3 install xlrd
 service mysql stop
 service mysql start
 echo "Installation Complete"
