@@ -50,7 +50,6 @@ def home():
     cur.close()
     return render_template("/home.html", machines=machines)
 
-
 @app.route('/time.html', methods=['GET', 'POST',  'PUT'])
 def timeFunction():
     # form = userTime()
@@ -795,6 +794,7 @@ def uploadUsers():
         cur.close()
         return render_template("/reports.html", message="usersSuccess")
     except Exception as e:
+        print(e)
         return render_template("/reports.html", message="usersFailure")
 
 @app.route("/uploadUsage", methods=["POST"])
