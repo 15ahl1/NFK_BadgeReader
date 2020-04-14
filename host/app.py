@@ -777,7 +777,7 @@ def uploadUsers():
     try:
         file = request.files['uploadUsers']
         file.save('instance/uploads/Users_file.xlsx')
-        answers = pandas.read_excel(file)
+        answers = pandas.read_excel(file, converters={'Permissions':str})
         cur = mysql.connection.cursor()
         cur.execute("DELETE FROM users")
         name = answers['username']
