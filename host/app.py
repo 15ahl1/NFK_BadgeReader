@@ -779,7 +779,7 @@ def uploadUsers():
         file.save('instance/uploads/Users_file.xlsx')
         answers = pandas.read_excel(file)
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM Users")
+        cur.execute("DELETE FROM users")
         name = answers['username']
         pin = answers['userPin']
         super = answers['supervisor']
