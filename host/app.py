@@ -99,21 +99,16 @@ def timeHelper(name, date, machine):
         label7 = currentDate.strftime("%A") + " " + str(currentDate.day)
 
         cur = mysql.connection.cursor()
-        length = cur.execute("SELECT userPin FROM users WHERE userName = (%s)", ([name]))
-        if length != 0:
-            userID = cur.fetchone()
-            length = cur.execute("SELECT timeUsed FROM entries WHERE userID = (%s)", ([userID[0]]))
-            usage = cur.fetchall()
+        length = cur.execute("SELECT sessionStart, timeUsed FROM sessions WHERE userName = (%s)", ([name]))
+        usage = cur.fetchall();
         mysql.connection.commit()
         cur.close()
         if length == 0:
             errorMessage = "No values for that user"
         else:
-            if length % 2 != 0:
-                length -= 1
-            for i in range(0, length, 2):
-                sessionTime = usage[i+1][0] - usage[i][0]
-                sessionTime = sessionTime.total_seconds() / 3600
+            for i in range(0, length):
+                sessionTime = float(usage[i][1])
+                print("looped")
                 if usage[i][0].date() == currentDate:
                     value7 += sessionTime
                 elif usage[i][0].date() == yesterday:
@@ -130,53 +125,50 @@ def timeHelper(name, date, machine):
                     value1 += sessionTime
     elif date != '':
         labels = ["","","","","","",""]
-        for i in range(len(machines)):
-            labels[i] = machines[i][1]
-
-        label1 = labels[0]
-        label2 = labels[1]
-        label3 = labels[2]
-        label4 = labels[3]
-        label5 = labels[4]
-        label6 = labels[5]
-        label7 = labels[6]
         units = "Number of Hours of Machine Use For " + date
+        if len(machines) == 7:
+            for i in range(len(machines)):
+                labels[i] = machines[i][1]
 
-        cur = mysql.connection.cursor()
-        if len(date) != 10:
-            errorMessage = "No entries for that date"
-        else:
-            #01/01/2020 <example>
-            dateQuery = date[6:10] + "-" + date[0: 2] + "-" + date[3:5]
-            length = cur.execute("SELECT timeUsed, machine FROM entries WHERE DATE(timeUsed) = (%s)", ([dateQuery]))
-            usage = cur.fetchall()
-            mysql.connection.commit()
-            cur.close()
-            if length == 0:
+            label1 = labels[0]
+            label2 = labels[1]
+            label3 = labels[2]
+            label4 = labels[3]
+            label5 = labels[4]
+            label6 = labels[5]
+            label7 = labels[6]
+
+            cur = mysql.connection.cursor()
+            if len(date) != 10:
                 errorMessage = "No entries for that date"
             else:
-                if length % 2 != 0:
-                    length -= 1
-                for i in range(0, length, 2):
-                    sessionTime = usage[i+1][0] - usage[i][0]
-                    sessionTime = sessionTime.total_seconds() / 3600
-
-                    for machine in machines:
-                        if usage[i][1] == machine[0]:
+                #01/01/2020 <example>
+                dateQuery = date[6:10] + "-" + date[0: 2] + "-" + date[3:5]
+                length = cur.execute("SELECT timeUsed, machineName FROM sessions WHERE DATE(sessionStart) = (%s)", ([dateQuery]))
+                usage = cur.fetchall()
+                mysql.connection.commit()
+                cur.close()
+                if length == 0:
+                    errorMessage = "No entries for that date"
+                else:
+                    for i in range(0, length):
+                        sessionTime = float(usage[i][0])
+                        if usage[i][1] == machines[0][1]:
                             value1 += sessionTime
-                        elif usage[i][1] == machine[0]:
+                        elif usage[i][1] == machines[1][1]:
                             value2 += sessionTime
-                        elif usage[i][1] == machine[0]:
+                        elif usage[i][1] == machines[2][1]:
                             value3 += sessionTime
-                        elif usage[i][1] == machine[0]:
+                        elif usage[i][1] == machines[3][1]:
                             value4 += sessionTime
-                        elif usage[i][1] == machine[0]:
+                        elif usage[i][1] == machines[4][1]:
                             value5 += sessionTime
-                        elif usage[i][1] == machine[0]:
+                        elif usage[i][1] == machines[5][1]:
                             value6 += sessionTime
-                        elif usage[i][1] == machine[0]:
+                        elif usage[i][1] == machines[6][1]:
                             value7 += sessionTime
-
+        else:
+            errorMessage = "Incorrect Number of Machines"
     elif machine != '':
         # Get Selected Machine by mac
         selected_mac = html.unescape(machine)
@@ -205,18 +197,15 @@ def timeHelper(name, date, machine):
         label7 = currentDate.strftime("%A") + " " + str(currentDate.day)
 
         cur = mysql.connection.cursor()
-        length = cur.execute("SELECT timeUsed FROM entries WHERE machine = '{}'".format(selected_mac))
+        length = cur.execute("SELECT sessionStart, timeUsed FROM sessions WHERE machineName = %s", ([name[0]]))
         usage = cur.fetchall()
         mysql.connection.commit()
         cur.close()
         if length == 0:
             errorMessage = "No entries this week for that machine"
         else:
-            if length % 2 != 0:
-                length -= 1
-            for i in range(0, length, 2):
-                sessionTime = usage[i+1][0] - usage[i][0]
-                sessionTime = sessionTime.total_seconds() / 3600
+            for i in range(0, length):
+                sessionTime = float(usage[i][1])
                 if usage[i][0].date() == currentDate:
                     value7 += sessionTime
                 elif usage[i][0].date() == yesterday:
@@ -250,18 +239,15 @@ def timeHelper(name, date, machine):
 
 
         cur = mysql.connection.cursor()
-        length = cur.execute("SELECT timeUsed FROM entries")
+        length = cur.execute("SELECT sessionStart, timeUsed FROM sessions")
         usage = cur.fetchall()
         mysql.connection.commit()
         cur.close()
         if length == 0:
             errorMessage = "No entries this week"
         else:
-            if length % 2 != 0:
-                length -= 1
-            for i in range(0, length, 2):
-                sessionTime = usage[i+1][0] - usage[i][0]
-                sessionTime = sessionTime.total_seconds() / 3600
+            for i in range(0, length):
+                sessionTime = float(usage[i][1])
                 if usage[i][0].date() == currentDate:
                     value7 += sessionTime
                 elif usage[i][0].date() == yesterday:
