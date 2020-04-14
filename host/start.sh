@@ -18,5 +18,3 @@ service mysql start
 echo "Installation Complete"
 clear
 mysql -uroot
-
-
