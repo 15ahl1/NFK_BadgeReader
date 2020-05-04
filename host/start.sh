@@ -4,6 +4,7 @@ sudo apt install mysql.server
 sudo apt install python3
 sudo apt install python-pip
 sudo apt install python3-pip
+sudo apt-get install python3.6-dev libmysqlclient-dev
 sudo pip3 install flask
 sudo pip3 install flask_wtf
 sudo pip3 install flask_mysqldb
@@ -12,9 +13,14 @@ sudo pip3 install pyyaml
 sudo pip3 install openpyxl
 sudo pip3 install pandas
 sudo pip3 install openpyxl
-sudo pip3 install xlrd
+sudo pip3 install os
+sudo pip3 install socket
+
 service mysql stop
 service mysql start
-echo "Installation Complete"
+echo "Installation Complete, Starting Consumer..."
+python3 ./Consumer.py &
+sleep 5
 clear
+echo "Starting Server..."
 mysql -uroot
