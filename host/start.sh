@@ -16,11 +16,11 @@ sudo pip3 install openpyxl
 sudo pip3 install os
 sudo pip3 install socket
 
-service mysql stop
-service mysql start
+sudo service mysql stop
+sudo service mysql start
 echo "Installation Complete, Starting Consumer..."
-python3 ./Consumer.py &
+sudo python3 ./Consumer.py &
 sleep 5
 clear
 echo "Starting Server..."
-mysql -uroot
+sudo mysql -uroot
